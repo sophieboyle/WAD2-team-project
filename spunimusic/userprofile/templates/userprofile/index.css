@@ -1,0 +1,32 @@
+body, html {
+    height: 100%;
+    font-family: 'Oswald', sans-serif;
+}
+
+#navbar-search {
+    width: 400px;
+}
+
+.top-space {
+    margin-top: 20px;
+}
+
+.text-header {
+    text-align: center;
+    padding: 30px;
+}
+
+.listing-image {
+    float: left;
+}
+
+.listing-text {
+    margin-top: 20px;
+    margin-left: 10px;
+    font-size: xx-large;
+    float: left;
+}
+
+.listing-button {
+    float: right;
+}
