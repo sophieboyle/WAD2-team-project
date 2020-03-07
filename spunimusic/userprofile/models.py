@@ -1,5 +1,5 @@
 from django.db import models
-from spunimusic.spuni.models import Song
+from spuni.models import Song
 from django.contrib.auth.models import User
 
 """
@@ -16,4 +16,4 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     photo = models.URLField(max_length=PHOTO_MAX_LENGTH)
-    upvotedSongs = models.ForeignKey(Song)
+    upvotedSongs = models.ForeignKey(Song, on_delete=models.CASCADE)
