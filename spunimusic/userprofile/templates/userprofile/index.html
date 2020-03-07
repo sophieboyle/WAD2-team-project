@@ -1,9 +1,118 @@
-<h1>Latest Releases</h1>
-<p>We care about you, but we don't have anything done yet.</p>
+{% extends "userprofile/base.html" %}
+{% load static %}
 
-{% if user.is_authenticated %}
-<a href="{% url 'logout' %}" class="header-link">Log out</a>
-    <h1>{{ username }}</h1>
-{% else %}
-    <a href="{% url "social:begin" "spotify" %}">Spotify</a>
-{% endif %}
+{% block css_block %}
+    <link rel="stylesheet" href="index.css">
+{% endblock %}
+
+{% block body_block %}
+    <!-- To change ASAP: Bad Practice - Vassilios -->
+    <style type="text/css"> 
+    body, html {
+    height: 100%;
+    font-family: 'Oswald', sans-serif;
+    }
+
+    #navbar-search {
+        width: 400px;
+    }
+
+    .top-space {
+        margin-top: 20px;
+    }
+
+    .text-header {
+        text-align: center;
+        padding: 30px;
+    }
+
+    .listing-image {
+        float: left;
+    }
+
+    .listing-text {
+        margin-top: 20px;
+        margin-left: 10px;
+        font-size: xx-large;
+        float: left;
+    }
+
+    .listing-button {
+        float: right;
+    }
+    </style>
+
+    <!-- Banner -->
+    <div class="container">
+        <div class="row top-space">
+           <div class="col-md-12">
+               <p class="text-header">
+                   <span style="font-weight:bold;font-size:xx-large">Global Top 100 Songs</span>
+                   <br>
+                   <span style="font-size:large">Songs upvoted by your fellow students!</span>
+               </p>
+           </div>
+        </div>
+    </div>
+    <!-- Banner End -->
+    
+    <!-- Top 100 Table -->
+    <div class="container">
+
+        <div class="row top-space">
+            <div class="col-md-12">
+                <img class="listing-image" src="http://placehold.it/150x150">
+                <p class="listing-text">Song Name<br>Song Title</p>
+                <img class="listing-button" src="http://placehold.it/150x150">
+                <img class="listing-button" src="http://placehold.it/150x150">
+            </div>
+        </div>
+
+        <div class="row top-space">
+            <div class="col-md-12">
+                <img class="listing-image" src="http://placehold.it/150x150">
+                <p class="listing-text">Song Name<br>Song Title</p>
+                <img class="listing-button" src="http://placehold.it/150x150">
+                <img class="listing-button" src="http://placehold.it/150x150">
+            </div>
+        </div>
+
+        <div class="row top-space">
+            <div class="col-md-12">
+                <img class="listing-image" src="http://placehold.it/150x150">
+                <p class="listing-text">Song Name<br>Song Title</p>
+                <img class="listing-button" src="http://placehold.it/150x150">
+                <img class="listing-button" src="http://placehold.it/150x150">
+            </div>
+        </div>
+
+        <div class="row top-space">
+            <div class="col-md-12">
+                <img class="listing-image" src="http://placehold.it/150x150">
+                <p class="listing-text">Song Name<br>Song Title</p>
+                <img class="listing-button" src="http://placehold.it/150x150">
+                <img class="listing-button" src="http://placehold.it/150x150">
+            </div>
+        </div>
+
+        <div class="row top-space">
+            <div class="col-md-12">
+                <img class="listing-image" src="http://placehold.it/150x150">
+                <p class="listing-text">Song Name<br>Song Title</p>
+                <img class="listing-button" src="http://placehold.it/150x150">
+                <img class="listing-button" src="http://placehold.it/150x150">
+            </div>
+        </div>
+
+        <div class="row top-space">
+            <div class="col-md-12">
+                <img class="listing-image" src="http://placehold.it/150x150">
+                <p class="listing-text">Song Name<br>Song Title</p>
+                <img class="listing-button" src="http://placehold.it/150x150">
+                <img class="listing-button" src="http://placehold.it/150x150">
+            </div>
+        </div>
+
+    </div>
+    <!-- Top 100 Table End -->
+{% endblock %}
