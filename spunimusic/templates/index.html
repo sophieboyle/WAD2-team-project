@@ -42,6 +42,8 @@
     }
     </style>
 
+
+	
     <!-- Banner -->
     <div class="container">
         <div class="row top-space">
@@ -59,59 +61,24 @@
     <!-- Top 100 Table -->
     <div class="container">
 
-        <div class="row top-space">
-            <div class="col-md-12">
-                <img class="listing-image" src="http://placehold.it/150x150">
-                <p class="listing-text">Song Name<br>Song Title</p>
-                <img class="listing-button" src="http://placehold.it/150x150">
-                <img class="listing-button" src="http://placehold.it/150x150">
-            </div>
-        </div>
+		{% if songs %}			
+				{% for song in songs %}
+					<div class="row top-space">
+						<div class="col-md-12">
+							<img class="listing-image" src="http://placehold.it/150x150">
+							<p class="listing-text">{{song.name}}<br>{{song.artist}}</p>
+							<img class="listing-button" src="http://placehold.it/150x150">
+							<img class="listing-button" src="http://placehold.it/150x150">
+						</div>
+					</div>
+				{% endfor %}
+			
+			{% else %}
 
-        <div class="row top-space">
-            <div class="col-md-12">
-                <img class="listing-image" src="http://placehold.it/150x150">
-                <p class="listing-text">Song Name<br>Song Title</p>
-                <img class="listing-button" src="http://placehold.it/150x150">
-                <img class="listing-button" src="http://placehold.it/150x150">
-            </div>
-        </div>
+				<strong>There are no songspresent.</strong>
+			{% endif %}
 
-        <div class="row top-space">
-            <div class="col-md-12">
-                <img class="listing-image" src="http://placehold.it/150x150">
-                <p class="listing-text">Song Name<br>Song Title</p>
-                <img class="listing-button" src="http://placehold.it/150x150">
-                <img class="listing-button" src="http://placehold.it/150x150">
-            </div>
-        </div>
 
-        <div class="row top-space">
-            <div class="col-md-12">
-                <img class="listing-image" src="http://placehold.it/150x150">
-                <p class="listing-text">Song Name<br>Song Title</p>
-                <img class="listing-button" src="http://placehold.it/150x150">
-                <img class="listing-button" src="http://placehold.it/150x150">
-            </div>
-        </div>
-
-        <div class="row top-space">
-            <div class="col-md-12">
-                <img class="listing-image" src="http://placehold.it/150x150">
-                <p class="listing-text">Song Name<br>Song Title</p>
-                <img class="listing-button" src="http://placehold.it/150x150">
-                <img class="listing-button" src="http://placehold.it/150x150">
-            </div>
-        </div>
-
-        <div class="row top-space">
-            <div class="col-md-12">
-                <img class="listing-image" src="http://placehold.it/150x150">
-                <p class="listing-text">Song Name<br>Song Title</p>
-                <img class="listing-button" src="http://placehold.it/150x150">
-                <img class="listing-button" src="http://placehold.it/150x150">
-            </div>
-        </div>
 
     </div>
     <!-- Top 100 Table End -->
