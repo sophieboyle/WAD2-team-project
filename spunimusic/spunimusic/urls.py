@@ -6,4 +6,5 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('', include('userprofile.urls')),
     path('auth', include('django.contrib.auth.urls')),
+    path('song/', include('spuni.urls')),
 ]
