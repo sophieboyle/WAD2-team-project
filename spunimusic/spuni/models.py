@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 
 """
     @brief Song model
@@ -16,3 +17,8 @@ class Song(models.Model):
     albumArt = models.URLField(max_length=ALBUM_ART_MAX_LENGTH)
     upvotes = models.IntegerField(default = 0)
     artist = models.CharField(max_length=ARTIST_MAX_LENGTH)
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Song, self).save(*args, **kwargs)

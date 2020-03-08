@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+{% extends 'userprofile/base.html'%}
+
+
+{% block body_block %}
+    {% if song %}
+        <h1>{{ song.name }}</h1>
+        <ul>
+            <li>{{ song.upvotes }}</li>
+            <li>{{ song.artist }}</li>
+        </ul>
+    {% else %}
+        <h1>Unknown Song</h1>
+    {% endif %}
+{% endblock %}
