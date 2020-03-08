@@ -4,7 +4,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('social/', include('social_django.urls')),
     path('', include('django.contrib.auth.urls')),
-    path('', include('userprofile.urls')),
+    # path('', include('userprofile.urls')),
     path('auth', include('django.contrib.auth.urls')),
-    path('song/', include('spuni.urls')),
+    path('spuni/', include('spuni.urls')),
 ]
