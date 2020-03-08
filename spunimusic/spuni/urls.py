@@ -4,5 +4,5 @@ from spuni import views
 app_name = 'song'
 
 urlpatterns = [
-    path('<int:song_id>/', views.show_song, name='show_song'),
+    path('<slug:song_name_slug>/', views.show_song, name='show_song'),
 ]
