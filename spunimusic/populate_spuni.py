@@ -35,9 +35,14 @@ def populate():
     ]
 
     for song in songs:
-        add_song()
+        add_song(song['name'], song['albumArt'], song['upvotes'], song['artist'])
 
 def add_song(name, albumArt, upvotes, artist):
     s = Song.objects.get_or_create(name=name, albumArt=albumArt, upvotes=upvotes, artist=artist)[0]
     s.save()
     return s
+
+
+if __name__ == '__main__':
+    print('Populating Songs')
+    populate()
