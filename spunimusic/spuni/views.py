@@ -6,8 +6,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth import logout as auth_logout
+from spuni.forms import UserForm, UserProfileForm
 
-# View to show pages for a given song
+
+"""
+    @brief Shows the song details for the given song on song.html
+    @param request
+    @param String song_name_slug: Slugified song name
+"""
 def show_song(request, song_name_slug):
     context_dict = {}
     # Song has been found and added to context
@@ -19,6 +25,11 @@ def show_song(request, song_name_slug):
         context_dict['song'] = None
     return render(request, 'song.html', context=context_dict) 
 
+
+"""
+    @brief Shows index view on index.html
+    @param request
+"""
 def index(request):
     song_list = Song.objects.order_by('-upvotes')
     context_dict = {'songs': song_list}
@@ -30,6 +41,55 @@ def index(request):
         return render(request, 'index.html', context_dict)
     
 
+"""
+    @brief Logout view
+    @param request
+"""
 def logout(request):
     auth_logout(request)
     return render('index.html')
+
+
+"""
+    @brief Shows the registration forms for new users to register
+    @param request
+"""
+def register(request):
+    registered = False
+
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+        profile_form = UserProfileForm(request.POST)
+        
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            # Hash passwd and save
+            user.set_password(user.password)
+            user.save()
+
+            # Set up userProfile stuff without committing to db
+            # Avoids integrity issues
+            profile = profile_form.save(commit=False)
+            profile.user = user
+
+            # Parse profile picture
+            if 'photo' in request.FILES:
+                profile.photo = request.FILES['photo']
+            
+            # Save instance
+            profile.save()
+            registered = True
+        
+        # Form was invalid
+        else:
+            print(user_form.errors, profile_form.errors)
+
+    # Not HTTP POST, render the empty forms for user input
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+    
+    return render(request, 'register.html',
+                    context = {'user_form': user_form,
+                                'profile_form': profile_form,
+                                'registered': registered})
