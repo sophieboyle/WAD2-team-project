@@ -65,8 +65,10 @@
 				{% for song in songs %}
 					<div class="row top-space">
 						<div class="col-md-12">
-							<img class="listing-image" src="http://placehold.it/150x150">
+						<a href="{% url 'spuni:show_song' song.slug %}">
+							<img class="listing-image" id="thumbnail" height="150px" width="150px" src={{song.albumArt}}>
 							<p class="listing-text">{{song.name}}<br>{{song.artist}}</p>
+						</a>
 							<img class="listing-button" src="http://placehold.it/150x150">
 							<img class="listing-button" src="http://placehold.it/150x150">
 						</div>

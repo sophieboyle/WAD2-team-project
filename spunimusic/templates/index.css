@@ -20,6 +20,11 @@ body, html {
     float: left;
 }
 
+#thumbnail  {
+	height:150px;
+	width:150px;
+}
+
 .listing-text {
     margin-top: 20px;
     margin-left: 10px;
