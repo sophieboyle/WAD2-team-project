@@ -1,87 +1,44 @@
-{% extends "base.html" %}
-{% load static %}
-
+{% extends "base.html" %} 
+{% load static %} 
 {% block css_block %}
-    <link rel="stylesheet" href="index.css">
-{% endblock %}
-
+<link rel="stylesheet" href="{% static 'css/index.css' %}"> 
+{% endblock %} 
 {% block body_block %}
-    <!-- To change ASAP: Bad Practice - Vassilios -->
-    <style type="text/css"> 
-    body, html {
-    height: 100%;
-    font-family: 'Oswald', sans-serif;
-    }
-
-    #navbar-search {
-        width: 400px;
-    }
-
-    .top-space {
-        margin-top: 20px;
-    }
-
-    .text-header {
-        text-align: center;
-        padding: 30px;
-    }
-
-    .listing-image {
-        float: left;
-    }
-
-    .listing-text {
-        margin-top: 20px;
-        margin-left: 10px;
-        font-size: xx-large;
-        float: left;
-    }
-
-    .listing-button {
-        float: right;
-    }
-    </style>
-
-
-	
-    <!-- Banner -->
-    <div class="container">
-        <div class="row top-space">
-           <div class="col-md-12">
-               <p class="text-header">
-                   <span style="font-weight:bold;font-size:xx-large">Global Top 100 Songs</span>
-                   <br>
-                   <span style="font-size:large">Songs upvoted by your fellow students!</span>
-               </p>
-           </div>
+<!-- Banner -->
+<div class="container">
+    <div class="row top-space">
+        <div class="col-md-12">
+            <p class="text-header">
+                <span id="global-text" style="font-weight:bold;font-size:70px">GLOBAL TOP 100 SONGS</span>
+                <br>
+                <span style="font-size:50px">Songs upvoted by your fellow students!</span>
+            </p>
         </div>
     </div>
-    <!-- Banner End -->
-    
-    <!-- Top 100 Table -->
-    <div class="container">
+</div>
+<!-- Banner End -->
 
-		{% if songs %}			
-				{% for song in songs %}
-					<div class="row top-space">
-						<div class="col-md-12">
-						<a href="{% url 'spuni:show_song' song.slug %}">
-							<img class="listing-image" id="thumbnail" height="150px" width="150px" src={{song.albumArt}}>
-							<p class="listing-text">{{song.name}}<br>{{song.artist}}</p>
-						</a>
-							<img class="listing-button" src="http://placehold.it/150x150">
-							<img class="listing-button" src="http://placehold.it/150x150">
-						</div>
-					</div>
-				{% endfor %}
-			
-			{% else %}
+<!-- Top 100 Table -->
+<div class="container border">
 
-				<strong>There are no songspresent.</strong>
-			{% endif %}
-
-
-
+    {% if songs %} 
+    {% for song in songs %}
+    <div class="row top-space">
+        <div class="col-md-12">
+            <a href="{% url 'spuni:show_song' song.slug %}">
+                <img class="listing-image" id="thumbnail" height="150px" width="150px" src={{song.albumArt}}>
+                <p class="listing-text">{{song.name}}
+                    <br>{{song.artist}}</p>
+            </a>
+            <img class="listing-button" src="{% static 'images/downvote.png' %}" width=150px height=150px>
+            <img class="listing-button" src="{% static 'images/upvote.png' %}" width=150px height=150px>
+        </div>
     </div>
-    <!-- Top 100 Table End -->
+    {% endfor %} 
+    {% else %}
+    <strong>There are no songspresent.</strong> 
+    {% endif %}
+
+</div>
+<!-- Top 100 Table End -->
 {% endblock %}
