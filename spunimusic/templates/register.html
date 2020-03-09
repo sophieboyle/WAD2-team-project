@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block body_block %}
+    <h1>Register!</h1>
+    {% if registered %}
+        <strong>You have registered!</strong>
+    {% else %}
+        <strong>Register here!</strong>
+        <form id="user_form" method="post" action="{% url 'spuni:register'%}" enctype="multipart/form-data">
+            <!-- Display the form -->
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            <!-- Provide button to submit form as POST -->
+            <input type="submit" name="submit" value="Register"/>
+        </form>
+    {% endif %}
+{% endblock %}
