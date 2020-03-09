@@ -24,6 +24,9 @@ class Song(models.Model):
         self.slug = slugify(self.name)
         super(Song, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
+
 """
     @brief User model
     @field url photo: Link to user's profile picture
@@ -38,4 +41,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     photo = models.URLField(max_length=PHOTO_MAX_LENGTH)
-    upvotedSongs = models.ForeignKey(Song, on_delete=models.CASCADE)
+    # FK CONSTRAINTS NEED TO BE REWORKED
+    # upvotedSongs = models.ForeignKey(Song, on_delete=models.CASCADE, default=null)
+
+    def __str__(self):
+        return self.user.username
