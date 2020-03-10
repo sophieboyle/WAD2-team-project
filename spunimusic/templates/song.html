@@ -1,16 +1,26 @@
-<!DOCTYPE html>
-
-{% extends 'base.html'%}
-
-
+{% extends "base.html" %} 
+{% load static %} 
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'css/song.css' %}"> 
+{% endblock %} 
 {% block body_block %}
-    {% if song %}
-        <h1>{{ song.name }}</h1>
-        <ul>
-            <li>{{ song.upvotes }}</li>
-            <li>{{ song.artist }}</li>
-        </ul>
-    {% else %}
-        <h1>Unknown Song</h1>
-    {% endif %}
+<div class="container">
+    <div class="row h-100 vcenter">
+        <div class="col-6 wrapper">
+            <img src="{{ song.albumArt }}" height="300px" width="300px" style="float:left">
+            <p id="song-information" style="font-weight: bold; font-size: x-large;float: left">
+                {{ song.name }}
+                <br>
+                {{ song.artist }}
+                <br>
+                <br>
+                <img class="listing-button" src="{% static 'images/upvote.png' %}" width=100px height=100px>
+                <img class="listing-button" src="{% static 'images/downvote.png' %}" width=100px height=100px>
+            </p>
+        </div>
+        <div class="col-6 wrapper">
+            <p style="font-weight: bold; font-size: x-large;float: left">Comments:</p>
+        </div>
+    </div>
+</div>
 {% endblock %}
