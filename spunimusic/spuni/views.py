@@ -98,7 +98,7 @@ def register(request):
     @brief Shows login view for users
     @param request 
 """
-def login(request):
+def user_login(request):
     # Pull details from POST login
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -109,7 +109,7 @@ def login(request):
             # Account is active
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('rango:index'))
+                return redirect(reverse('spuni:index'))
             else:
                 return HttpResponse("Sorry, your spuni account has been deactivated! Contact us regarding reactivation of your account.")
         # Incorrect login details
