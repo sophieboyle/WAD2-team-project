@@ -42,7 +42,8 @@ class UserProfile(models.Model):
 
     photo = models.URLField(max_length=PHOTO_MAX_LENGTH)
     # FK CONSTRAINTS NEED TO BE REWORKED
-    # upvotedSongs = models.ForeignKey(Song, on_delete=models.CASCADE, default=null)
+    #on_delete=models.CASCADE, default=null
+    upvotedSongs = models.ManyToManyField(Song, blank=True)
 
     def __str__(self):
         return self.user.username
