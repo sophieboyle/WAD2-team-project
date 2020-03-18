@@ -36,7 +36,7 @@ def index(request):
     if request.user.is_authenticated:
         username = request.user.username
         print(username)
-        return render(request, 'userprofile/index.html', {'username':username}, context_dict)
+        return render(request, 'index.html', {'username':username}, context_dict)
     else:
         return render(request, 'index.html', context_dict)
     
