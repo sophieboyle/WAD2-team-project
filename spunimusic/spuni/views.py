@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth import logout as auth_logout
-from spuni.forms import UserForm, UserProfileForm
+from spuni.forms import UserForm, UserProfileForm, SongForm
 
 
 """
@@ -119,3 +119,27 @@ def user_login(request):
     # Display get login form
     else:
         return render(request, 'login.html')
+
+"""
+    @brief Display form to request to add a song
+    @param request
+"""
+@login_required
+def add_song(request):
+    form = SongForm()
+    
+    if request.method == 'POST':
+        form = SongForm(request.POST)
+        if form.is_valid():
+            """
+            NOTE:
+                Here I think that we'd make commit=False
+                And call some sort of function on the backend
+                to fill out the other details of the model
+            """
+            song = form.save(commit=True)
+            return redirect(reverse('spuni:show_song',
+                                    kwargs={'song_name_slug':song.song_name_slug}))
+        else:
+            print(form.errors)
+    return render(request, 'add_page.html', {'form':form})
