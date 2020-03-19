@@ -41,9 +41,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     photo = models.URLField(max_length=PHOTO_MAX_LENGTH)
-    # FK CONSTRAINTS NEED TO BE REWORKED
-    #on_delete=models.CASCADE, default=null
-    upvotedSongs = models.ManyToManyField(Song, blank=True)
+    # Related name gives a name to the intermediate model for the relationship
+    upvotedSongs = models.ManyToManyField(Song, blank=True, related_name="user_song")
 
     def __str__(self):
         return self.user.username

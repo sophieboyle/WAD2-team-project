@@ -7,7 +7,8 @@ import django
 # Imports django project settings
 django.setup()
 # Performed following initialisation to avoid exception
-from spuni.models import Song
+from django.contrib.auth.models import User, UserManager
+from spuni.models import Song, UserProfile
 
 def populate():
     # List of songs (as dicts)
@@ -33,15 +34,43 @@ def populate():
             'upvotes':0,
             'artist':'Rick Astley'}
     ]
-
+    # Populate song model
     for song in songs:
         add_song(song['name'], song['albumArt'], song['upvotes'], song['artist'])
+
+    # List of user profiles (as dicts)
+    users = [
+        {'username':'shibe1',
+            'password':'iamshibe1',
+            'photo':'https://i.pinimg.com/originals/a3/af/17/a3af17efcaf49018a2188c9abb96acc4.png',
+            'upvotedSongs':[Song.objects.get(slug='renai-circulation')]},
+        {'username':'shibe2',
+            'password':'iamshibe2',
+            'photo':'https://66.media.tumblr.com/9aaa6bb6b1d8eef1ad7b7c08fc6d23bf/tumblr_oxz891R1jI1s9dacgo8_250.gifv',
+            'upvotedSongs':[Song.objects.get(slug='white-room'), Song.objects.get(slug='renai-circulation')]}
+    ]
+    # Populate userProfile
+    for user in users:
+        add_user(user['username'], user['password'], user['photo'])
+        for upvoted_song in user['upvotedSongs']:
+            add_relationship(user['username'], upvoted_song)
 
 def add_song(name, albumArt, upvotes, artist):
     s = Song.objects.get_or_create(name=name, albumArt=albumArt, upvotes=upvotes, artist=artist)[0]
     s.save()
     return s
 
+def add_user(username, password, photo):
+    user = User.objects.create_user(username=username, password=password)
+    u = UserProfile.objects.get_or_create(user=user, photo=photo)
+    print(u)
+    # u.save()
+    return u
+
+def add_relationship(username, song):
+    user = User.objects.get(username=username)
+    u = UserProfile.objects.get(user=user)
+    u.upvotedSongs.add(song)
 
 if __name__ == '__main__':
     print('Populating Songs')
