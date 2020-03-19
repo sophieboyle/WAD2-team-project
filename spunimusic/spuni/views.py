@@ -142,4 +142,4 @@ def add_song(request):
                                     kwargs={'song_name_slug':song.song_name_slug}))
         else:
             print(form.errors)
-    return render(request, 'add_page.html', {'form':form})
+    return render(request, 'add_song.html', {'form':form})
