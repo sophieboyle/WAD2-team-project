@@ -93,3 +93,29 @@ def register(request):
                     context = {'user_form': user_form,
                                 'profile_form': profile_form,
                                 'registered': registered})
+
+"""
+    @brief Shows login view for users
+    @param request 
+"""
+def user_login(request):
+    # Pull details from POST login
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        # If login details correct
+        if user:
+            # Account is active
+            if user.is_active:
+                login(request, user)
+                return redirect(reverse('spuni:index'))
+            else:
+                return HttpResponse("Sorry, your spuni account has been deactivated! Contact us regarding reactivation of your account.")
+        # Incorrect login details
+        else:
+            print(f"Invalid login details: {username}, {password}")
+            return HttpResponse("Invalid login details.")
+    # Display get login form
+    else:
+        return render(request, 'login.html')
