@@ -137,11 +137,12 @@ def add_song(request):
                 And call some sort of function on the backend
                 to fill out the other details of the model
             """
-            song = form.save(commit=True)
-            print(song)
-            print(song.slug)
-            return redirect(reverse('spuni:show_song',
-                                    kwargs={'song_name_slug':song.slug}))
+            try:
+                song = form.save(commit=True)
+                return redirect(reverse('spuni:show_song',
+                                kwargs={'song_name_slug':song.slug}))
+            except:
+                return redirect('/')
         else:
             print(form.errors)
     return render(request, 'add_song.html', {'form':form})
