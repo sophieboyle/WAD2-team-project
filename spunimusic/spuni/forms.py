@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from spuni.models import UserProfile
+from spuni.models import UserProfile, Song
 from django import forms
 
 
@@ -16,3 +16,8 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('photo',)
+
+class SongForm(forms.ModelForm):
+    class Meta:
+        model = Song
+        fields = ('name', 'artist',)
