@@ -34,10 +34,12 @@ def show_song(request, song_name_slug):
 def index(request):
     song_list = Song.objects.order_by('-upvotes')
     context_dict = {'songs': song_list}
+    print(request.user.is_authenticated)
     if request.user.is_authenticated:
         username = request.user.username
-        print(username)
-        return render(request, 'index.html', {'username':username}, context_dict)
+        context_dict["username"] = username
+        
+        return render(request, 'index.html', context_dict)
     else:
         return render(request, 'index.html', context_dict)
     
@@ -48,7 +50,7 @@ def index(request):
 """
 def logout(request):
     auth_logout(request)
-    return render('index.html')
+    return index(request)
 
 
 """
