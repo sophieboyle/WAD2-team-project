@@ -48,7 +48,7 @@ def index(request):
 """
 def logout(request):
     auth_logout(request)
-    return render('index.html')
+    return render(request, 'index.html')
 
 
 """
