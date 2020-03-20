@@ -163,4 +163,4 @@ def show_profile(request, username):
     except (User.DoesNotExist, UserProfile.DoesNotExist) as e:
         context_dict['user'] = None
         context_dict['username'] = None
-    return render(request, 'song.html', context=context_dict) 
+    return render(request, 'profile.html', context=context_dict) 
