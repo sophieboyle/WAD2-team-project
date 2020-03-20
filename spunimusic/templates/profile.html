@@ -8,10 +8,9 @@
     {% if user %}
         {% if username %}
             <h1>{{ username }}</h1>
-
-                {% if user.upvotedSongs %}
+                {% if songs %}
                     <ul>
-                        {% for song in upvotedSongs%}
+                        {% for song in songs %}
                             <li>{{ song.name }}</li>
                         {% endfor %}
                     </ul>
