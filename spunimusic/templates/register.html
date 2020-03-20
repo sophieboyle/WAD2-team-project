@@ -1,22 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block css_block %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}"> 
 {% endblock %}
 
 {% block body_block %}
-    <h1>Register!</h1>
     {% if registered %}
-        <strong>You have registered!</strong>
+    <meta http-equiv="REFRESH" content="0;{% url 'spuni:index'%}">
     {% else %}
-        <strong>Register here!</strong>
-        <form id="user_form" method="post" action="{% url 'spuni:register'%}" enctype="multipart/form-data">
-            <!-- Display the form -->
-            {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-            <!-- Provide button to submit form as POST -->
-            <input type="submit" name="submit" value="Register"/>
-        </form>
+        <div class="container">
+            <div class="row top-space">
+                <div class="col-md-12">
+                    <h1>Register here!</h1>
+                    <form id="user_form" method="post" action="{% url 'spuni:register'%}" enctype="multipart/form-data">
+                        <!-- Display the form -->
+                        {% csrf_token %}
+                        {{ user_form|crispy }}
+                        {{ profile_form|crispy }}
+                        <!-- Provide button to submit form as POST -->
+                        <input type="submit" name="submit" class="btn btn-success" value="Register"/>
+                    </form>
+                </div>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}

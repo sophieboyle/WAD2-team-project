@@ -21,7 +21,7 @@
     <nav id="navigation-bar" class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid collapse navbar-collapse">
             <div class="col-xs-4">
-                <img src="{% static 'images/spuni_100x69.png' %}" alt="Spuni Logo">
+                <a href="{% url 'spuni:index'%}"><img src="{% static 'images/spuni_100x69.png' %}" alt="Spuni Logo"></a>
             </div>
             <div class="col-xs-4">
                 <input id="navbar-search" class="form-control text-center top-padding-search" type="text" placeholder="Search for your favourite song.">
@@ -35,8 +35,8 @@
                     </div>
                 {% else %}
                     <div class="btn-group">
-                        <a class="nav-link text btn btn-secondary" href="#">Sign Up</a>
-                        <a class="nav-link text btn btn-secondary" href="#">Sign In</a>
+                        <a class="nav-link text btn btn-secondary" href="{% url 'spuni:register'%}">Sign Up</a>
+                        <a class="nav-link text btn btn-secondary" href="{% url 'spuni:login'%}">Sign In</a>
                     </div>
                 {% endif %}
             </div>

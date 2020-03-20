@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'spuni',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +165,6 @@ STATICFILES_DIRS = [STATIC_DIR, ]
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+# Forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
