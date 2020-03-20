@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth import logout as auth_logout
-from spuni.forms import UserForm, UserProfileForm, SongForm
+from spuni.forms import UserForm, UserProfileForm, SongForm, LoginForm
 
 
 """
@@ -101,6 +101,7 @@ def register(request):
 """
 def user_login(request):
     # Pull details from POST login
+    login_form = LoginForm(request.POST)
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -119,7 +120,8 @@ def user_login(request):
             return HttpResponse("Invalid login details.")
     # Display get login form
     else:
-        return render(request, 'login.html')
+        return render(request, 'login.html',
+                        context = {"login_form": login_form})
 
 """
     @brief Display form to request to add a song
