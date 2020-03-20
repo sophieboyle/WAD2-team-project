@@ -1,0 +1,21 @@
+{% extends "base.html" %} 
+{% load static %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block body_block %}
+    {% if user %}
+        {% if username %}
+            <h1>{{ username }}</h1>
+
+                {% if user.upvotedSongs %}
+                    <ul>
+                        {% for song in upvotedSongs%}
+                            <li>{{ song.name }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
