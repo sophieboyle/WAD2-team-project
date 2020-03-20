@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponse
-from spuni.models import Song
+from spuni.models import Song, UserProfile
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth import logout as auth_logout
@@ -146,3 +147,22 @@ def add_song(request):
         else:
             print(form.errors)
     return render(request, 'add_song.html', {'form':form})
+
+"""
+    @brief Shows the given user's profile
+    @param request
+    @param username
+"""
+@login_required
+def show_profile(request, username):
+    context_dict = {}
+    try:
+        u = UserProfile.objects.get(user=User.objects.get(username=username))
+        context_dict['user'] = u
+        context_dict['username'] = username
+        context_dict['songs'] = u.upvotedSongs.all()
+    except (User.DoesNotExist, UserProfile.DoesNotExist) as e:
+        context_dict['user'] = None
+        context_dict['username'] = None
+        context_dict['songs'] = u.upvotedSongs.all()
+    return render(request, 'profile.html', context=context_dict) 

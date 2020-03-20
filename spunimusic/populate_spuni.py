@@ -64,7 +64,6 @@ def add_user(username, password, photo):
     user = User.objects.create_user(username=username, password=password)
     u = UserProfile.objects.get_or_create(user=user, photo=photo)
     print(u)
-    # u.save()
     return u
 
 def add_relationship(username, song):

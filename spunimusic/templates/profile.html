@@ -1,0 +1,20 @@
+{% extends "base.html" %} 
+{% load static %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block body_block %}
+    {% if user %}
+        {% if username %}
+            <h1>{{ username }}</h1>
+                {% if songs %}
+                    <ul>
+                        {% for song in songs %}
+                            <li>{{ song.name }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
