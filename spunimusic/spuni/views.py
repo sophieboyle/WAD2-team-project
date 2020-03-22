@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth import logout as auth_logout
 from spuni.forms import UserForm, UserProfileForm, SongForm, LoginForm
-
+from spuni.spotifyapi import search
 
 """
     @brief Shows the song details for the given song on song.html
@@ -34,6 +34,7 @@ def show_song(request, song_name_slug):
 def index(request):
     song_list = Song.objects.order_by('-upvotes')
     context_dict = {'songs': song_list}
+    print(context_dict)
     print(request.user.is_authenticated)
     if request.user.is_authenticated:
         username = request.user.username
@@ -157,6 +158,16 @@ def add_song(request):
     @param request
     @param username
 """
+def search_song(request, query):
+    print("---------------")
+    print(query)
+    print("---------------")
+    context_dict = {'songs': search(query)}
+    if request.user.is_authenticated:
+        username = request.user.username
+        context_dict["username"] = username
+    return render(request, 'search.html', context_dict)
+    
 @login_required
 def show_profile(request, username):
     context_dict = {}
