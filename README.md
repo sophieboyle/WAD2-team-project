@@ -27,7 +27,16 @@
 
 
 
+## Stuff for spotipy
 
+In your terminal do the following:
+
+```
+export SPOTIPY_CLIENT_ID=client_id_here
+export SPOTIPY_CLIENT_SECRET=client_secret_here
+
+// on Windows, use `SET` instead of `export`
+```
 
 ## General Notes
 Spotify redirect URI: http://localhost:8000/social/complete/spotify/
@@ -40,5 +49,5 @@ Make sure while in development, you use localhost and not 127.0.0.1 because Spot
 
 ## TODO List
 - [x] Spotify login.
-- [] Basic web pages. i.e Home, Profile, etc.
+- [ ] Basic web pages. i.e Home, Profile, etc.
 
