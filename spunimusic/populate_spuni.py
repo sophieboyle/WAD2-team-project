@@ -61,7 +61,9 @@ def add_song(name, albumArt, upvotes, artist):
     return s
 
 def add_user(username, password, photo):
-    user = User.objects.create_user(username=username, password=password)
+    user = User.objects.create_user(username=username)
+    user.set_password(password)
+    user.save()
     u = UserProfile.objects.get_or_create(user=user, photo=photo)
     print(u)
     return u
