@@ -25,3 +25,23 @@ def upvote(username, songname):
         upvSong = u.upvotedSongs.add(s)
         s.upvotes += 1
         s.save()
+
+"""
+    @brief Given a username and songname, if a relationship
+           exists, removes it and decrements the song.
+    @param username: User's username as a string
+    @param songname: Songname as a string (not a slug) 
+"""
+def downvote(username, songname):
+    # Get objects from database for given parameters
+    u = UserProfile.objects.get(user=User.objects.get(username=username))
+    s = Song.objects.get(name=songname)
+    # Checks if the song has actually been upvoted
+    try:
+        upvSong = u.upvotedSongs.get(name=songname)
+        u.upvotedSongs.remove(s)
+        s.upvotes -= 1
+        s.save()
+    except ObjectDoesNotExist:
+        # Do nothing
+        return
