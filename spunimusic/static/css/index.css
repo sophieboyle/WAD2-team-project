@@ -37,3 +37,7 @@
     border-style: solid;
     border-width: medium;
 }
+
+#upvote, #downvote {
+    cursor: pointer;
+}

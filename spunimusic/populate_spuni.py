@@ -9,7 +9,7 @@ django.setup()
 # Performed following initialisation to avoid exception
 from django.contrib.auth.models import User, UserManager
 from spuni.models import Song, UserProfile
-from spuni.helper import upvote
+from spuni.views import upvote
 
 def populate():
     # List of songs (as dicts)
@@ -71,7 +71,7 @@ def add_user(username, password, photo):
 
 # Acts as a wrapper for upvote
 def add_relationship(username, song):
-    upvote(username, song.name)
+    upvote({"username": username, "songname": song.name})
 
 if __name__ == '__main__':
     print('Populating Songs')
