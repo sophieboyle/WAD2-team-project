@@ -35,8 +35,7 @@ def show_song(request, song_name_slug):
 def index(request):
     song_list = Song.objects.order_by('-upvotes')
     context_dict = {'songs': song_list}
-    print(context_dict)
-    print(request.user.is_authenticated)
+
     if request.user.is_authenticated:
         username = request.user.username
         context_dict["username"] = username
@@ -191,25 +190,46 @@ def show_profile(request, username):
     @param songname: Songname as a string (not a slug) 
 """
 def upvote(request):
+    # We only accept GET requests from authenticated users.
+    # We also bypass authentication if the process is called from the population script.
+    if (type(request) != dict):
+        if (request.method != "GET"):
+            print("Not a GET.")
+            return render(request, 'index.html')
+
+        if (not request.user.is_authenticated):
+            print("Not authenticated.")
+            return render(request, 'index.html')
+
+    # We have the dict versus normal because the population script also uses the upvote
+    # function. Meanwhile the requests don't use dict.
     if (type(request) == dict):
         username = request["username"]
         songname = request["songname"]
     else:
-        username = request.GET.get('username', None)
+        username = request.user.username
         songname = request.GET.get('songname', None)
 
-    # Get objects from database for given parameters
-    u = UserProfile.objects.get(user=User.objects.get(username=username))
-    s = Song.objects.get(name=songname)
+    # Get objects from database for the given parameters.
+    user_profile = UserProfile.objects.get(user=User.objects.get(username=username))
+    song = Song.objects.get(name=songname)
 
-    # Check if the user has already upvoted this song
+    # Check if the user has already upvoted this song.
     try:
-        upvSong = u.upvotedSongs.get(name=songname)
+        user_profile.upvotedSongs.get(name=songname)
+        print("Already done.")
     except ObjectDoesNotExist:
-        # If not, upvote
-        upvSong = u.upvotedSongs.add(s)
-        s.upvotes += 1
-        s.save()
+        # If not, then we upvote the song.
+        user_profile.upvotedSongs.add(song)
+        print(song.upvotes)
+        song.upvotes += 1
+        print(song.upvotes)
+        song.save()
+    
+    if (type(request) == dict):
+        return
+    else:
+        return render(request, 'index.html')
 
 """
     @brief Given a username and songname, if a relationship
@@ -217,16 +237,30 @@ def upvote(request):
     @param username: User's username as a string
     @param songname: Songname as a string (not a slug) 
 """
-def downvote(username, songname):
-    # Get objects from database for given parameters
-    u = UserProfile.objects.get(user=User.objects.get(username=username))
-    s = Song.objects.get(name=songname)
-    # Checks if the song has actually been upvoted
+def downvote(request):
+    # We only accept GET requests from authenticated users.
+    if (request.method != "GET"):
+        return render(request, 'index.html')
+
+    if (not request.user.is_authenticated):
+        return render(request, 'index.html')
+
+    # We have the dict versus normal because the population script also uses the upvote
+    # function. Meanwhile the requests don't use dict.
+    username = request.user.username
+    songname = request.GET.get('songname', None)
+
+    # Get objects from database for the given parameters.
+    user_profile = UserProfile.objects.get(user=User.objects.get(username=username))
+    song = Song.objects.get(name=songname)
+
+    # Check if the user has already downvoted this song.
     try:
-        upvSong = u.upvotedSongs.get(name=songname)
-        u.upvotedSongs.remove(s)
-        s.upvotes -= 1
-        s.save()
+        user_profile.upvotedSongs.get(name=songname)
+        user_profile.upvotedSongs.remove(song)
+        song.upvotes -= 1
+        song.save()
     except ObjectDoesNotExist:
-        # Do nothing
-        return
+        pass
+    
+    return render(request, 'index.html')
