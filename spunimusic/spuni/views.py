@@ -9,6 +9,7 @@ from datetime import datetime
 from django.contrib.auth import logout as auth_logout
 from spuni.forms import UserForm, UserProfileForm, SongForm, LoginForm
 from spuni.spotifyapi import search
+from django.core.exceptions import ObjectDoesNotExist
 
 """
     @brief Shows the song details for the given song on song.html
@@ -181,3 +182,51 @@ def show_profile(request, username):
         context_dict['username'] = None
         context_dict['songs'] = u.upvotedSongs.all()
     return render(request, 'profile.html', context=context_dict) 
+
+"""
+    @brief Given a username and songname, either creates
+           a new relationship or leaves the relationship
+           unchanged. Also increments song's upvote value
+    @param username: User's username as a string
+    @param songname: Songname as a string (not a slug) 
+"""
+def upvote(request):
+    if (type(request) == dict):
+        username = request["username"]
+        songname = request["songname"]
+    else:
+        username = request.GET.get('username', None)
+        songname = request.GET.get('songname', None)
+
+    # Get objects from database for given parameters
+    u = UserProfile.objects.get(user=User.objects.get(username=username))
+    s = Song.objects.get(name=songname)
+
+    # Check if the user has already upvoted this song
+    try:
+        upvSong = u.upvotedSongs.get(name=songname)
+    except ObjectDoesNotExist:
+        # If not, upvote
+        upvSong = u.upvotedSongs.add(s)
+        s.upvotes += 1
+        s.save()
+
+"""
+    @brief Given a username and songname, if a relationship
+           exists, removes it and decrements the song.
+    @param username: User's username as a string
+    @param songname: Songname as a string (not a slug) 
+"""
+def downvote(username, songname):
+    # Get objects from database for given parameters
+    u = UserProfile.objects.get(user=User.objects.get(username=username))
+    s = Song.objects.get(name=songname)
+    # Checks if the song has actually been upvoted
+    try:
+        upvSong = u.upvotedSongs.get(name=songname)
+        u.upvotedSongs.remove(s)
+        s.upvotes -= 1
+        s.save()
+    except ObjectDoesNotExist:
+        # Do nothing
+        return
