@@ -1,10 +1,79 @@
 body, html {
     height: 100%;
-    background-color: #E8E8E8 !important;
+    background-color: #4c515d !important;
     font-family: 'Oswald', sans-serif;
 }
 
-#navbar-search {
-    width: 400px;
-    margin-left: 100px;
+#search-bar {
+    max-width: 400px;
+    width: 100%;
+}
+
+.space-top {
+    margin-top: 20px;
+}
+
+.text-header {
+    text-align: center;
+    padding: 30px;
+}
+
+.global-text, .global-subtext {
+    color: white;
+}
+
+.global-text {
+    font-weight: bold;
+    font-size: 70px;
+}
+
+.global-subtext {
+    font-size: 50px;
+}
+
+.song-image {
+    max-height: 150px;
+    max-width: 150px;
+}
+
+.song-text {
+    margin-left: 2%;
+    font-size: xx-large;
+    float: left;
+}
+
+#upvote, #downvote {
+    cursor: pointer;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.border {
+    background-color: #69687a;
+    padding-bottom: 10px;
+    border-style: solid;
+    border-width: medium;
+}
+
+#hint_id_username, .requiredField, #div_id_email  {
+    color: white !important;
+}
+
+.center-text {
+    text-align: center;
+}
+
+#error_1_id_username, #error_1_id_password {
+    color: #dbafc3 !important;
+}
+
+.profile-identity {
+    padding-left: 1%;
+    padding-top: 1%;
 }

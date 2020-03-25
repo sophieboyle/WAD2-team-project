@@ -1,45 +1,43 @@
-{% extends "base.html" %} 
-{% load static %} 
-{% block css_block %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
-<script src="{% static 'js/votes.js' %}"></script>
-{% endblock %} 
+{% extends "base.html" %}
+
+{% load static %}
+
 {% block body_block %}
 <!-- Banner -->
-<div class="container">
-    <div class="row top-space">
+<div class="container-fluid">
+    <div class="row space-top">
         <div class="col-md-12">
             <p class="text-header">
-                <span id="global-text" style="font-weight:bold;font-size:70px">GLOBAL TOP 100 SONGS</span>
-                <br>
-                <span style="font-size:50px">Songs upvoted by your fellow students!</span>
+                <span class="global-text">GLOBAL TOP 100 SONGS</span>
+                <br />
+                <span class="global-subtext">Songs upvoted by your fellow students!</span>
             </p>
         </div>
     </div>
 </div>
-<!-- Banner End -->
+<!-- Banner -->
 
-<!-- Top 100 Table -->
+<!-- Song Table -->
 <div class="container border">
-
-    {% if songs %} 
-    {% for song in songs %}
-    <div class="row top-space">
-        <div class="col-md-12">
-            <a href="{% url 'spuni:show_song' song.slug %}">
-                <img class="listing-image" id="thumbnail" height="150px" width="150px" src={{song.albumArt}}>
-                <p class="listing-text">{{song.name}}
-                    <br>{{song.artist}}</p>
-            </a>
-            <img id="downvote" class="listing-button" src="{% static 'images/downvote.png' %}" width=150px height=150px>
-            <img id="upvote" class="listing-button" src="{% static 'images/upvote.png' %}" width=150px height=150px>
-        </div>
-    </div>
-    {% endfor %} 
-    {% else %}
-    <strong>There are no songs present.</strong> 
-    {% endif %}
-
+        {% if not songs %}
+            <!-- If there are no songs then post an error. -->
+            <div class="row space-top">
+                <p class="global-subtext">There are no songs present.</p>
+            </div>
+        {% else %}
+            {% for song in songs %}
+                <div class="row space-top">
+                    <div class="col-md-12">
+                        <a href="{% url 'spuni:show_song' song.slug %}">
+                            <img class="song-image float-left" src={{song.albumArt}}>
+                        </a>
+                        <p class="song-text"><strong>Song</strong>: {{song.name}}<br><strong>Artist</strong>: {{song.artist}}<br><strong>Likes</strong>: {{song.upvotes}}</p>
+                        <img id="downvote" class="song-image float-right" src="{% static 'images/downvote.png' %}">
+                        <img id="upvote" class="song-image float-right" src="{% static 'images/upvote.png' %}">
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
 </div>
-<!-- Top 100 Table End -->
+<!-- Song Table -->
 {% endblock %}

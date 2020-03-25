@@ -1,19 +1,18 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 {% load static %}
+
 {% load crispy_forms_tags %}
 
-{% block css_block %}
-<link rel="stylesheet" href="{% static 'css/register.css' %}"> 
-{% endblock %}
-
 {% block body_block %}
+    <!-- If they are already registered then they get redirected. -->
     {% if registered %}
-    <meta http-equiv="REFRESH" content="0;{% url 'spuni:index'%}">
+        <meta http-equiv="REFRESH" content="0;{% url 'spuni:index'%}">
     {% else %}
-        <div class="container">
-            <div class="row top-space">
+        <div class="container border space-top">
+            <div class="row">
                 <div class="col-md-12">
-                    <h1>Register here!</h1>
+                    <h1 class="global-subtext center-text"><strong>Register here:</strong></h1>
                     <form id="user_form" method="post" action="{% url 'spuni:register'%}" enctype="multipart/form-data">
                         <!-- Display the form -->
                         {% csrf_token %}
