@@ -212,19 +212,22 @@ def upvote(request):
 
     # Get objects from database for the given parameters.
     user_profile = UserProfile.objects.get(user=User.objects.get(username=username))
-    song = Song.objects.get(slug=songname)
-
-    # Check if the user has already upvoted this song.
+    
     try:
-        user_profile.upvotedSongs.get(slug=songname)
-        print("Already done.")
+        song = Song.objects.get(slug=songname)
+        # Check if the user has already upvoted this song.
+        try:
+            user_profile.upvotedSongs.get(slug=songname)
+            print("Already done.")
+        except ObjectDoesNotExist:
+            # If not, then we upvote the song.
+            user_profile.upvotedSongs.add(song)
+            print(song.upvotes)
+            song.upvotes += 1
+            print(song.upvotes)
+            song.save()
     except ObjectDoesNotExist:
-        # If not, then we upvote the song.
-        user_profile.upvotedSongs.add(song)
-        print(song.upvotes)
-        song.upvotes += 1
-        print(song.upvotes)
-        song.save()
+        pass
     
     if (type(request) == dict):
         return
@@ -259,14 +262,17 @@ def downvote(request):
 
     # Get objects from database for the given parameters.
     user_profile = UserProfile.objects.get(user=User.objects.get(username=username))
-    song = Song.objects.get(slug=songname)
 
-    # Check if the user has already downvoted this song.
     try:
-        user_profile.upvotedSongs.get(slug=songname)
-        user_profile.upvotedSongs.remove(song)
-        song.upvotes -= 1
-        song.save()
+        song = Song.objects.get(slug=songname)
+        # Check if the user has already downvoted this song.
+        try:
+            user_profile.upvotedSongs.get(slug=songname)
+            user_profile.upvotedSongs.remove(song)
+            song.upvotes -= 1
+            song.save()
+        except ObjectDoesNotExist:
+            pass
     except ObjectDoesNotExist:
         pass
     
