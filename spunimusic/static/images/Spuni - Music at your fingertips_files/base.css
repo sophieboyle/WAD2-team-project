@@ -13,10 +13,6 @@ body, html {
     margin-top: 20px;
 }
 
-.space-left {
-    margin-left: 20px;
-}
-
 .space-bottom {
     margin-bottom: 10px;
 }
@@ -47,7 +43,6 @@ body, html {
 .song-image-small {
     max-height: 100px;
     max-width: 100px;
-    margin-left: 2%;
     display: block;
 }
 
@@ -96,8 +91,4 @@ body, html {
 .big-image {
     width: 300px;
     height: 300px;
-}
-
-.item {
-    display: block;
 }

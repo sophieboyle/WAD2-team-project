@@ -20,8 +20,8 @@
                             <img class="song-image float-left" id="thumbnail" src={{song.albumArt}}>
                         </a>
                         <p class="song-text"><strong>Song</strong>: {{song.name}}<br><strong>Artist</strong>: {{song.artist}}<br><strong>Likes</strong>: {{song.upvotes}}</p>
-                        <img id="downvote" class="song-image float-right" src="{% static 'images/downvote.png' %}">
-                        <img id="upvote" class="song-image float-right" src="{% static 'images/upvote.png' %}">
+                        <img id="downvote" title="{{song.slug}}" class="song-image float-right" src="{% static 'images/downvote.png' %}">
+                        <img id="upvote" title="{{song.slug}}" class="song-image float-right" src="{% static 'images/upvote.png' %}">
                     </div>
                 </div>
             {% endfor %}
