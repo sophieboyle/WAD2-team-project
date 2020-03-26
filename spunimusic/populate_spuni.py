@@ -71,7 +71,7 @@ def add_user(username, password, photo):
 
 # Acts as a wrapper for upvote
 def add_relationship(username, song):
-    upvote({"username": username, "songname": song.name})
+    upvote({"username": username, "songname": song.slug})
 
 if __name__ == '__main__':
     print('Populating Songs')
