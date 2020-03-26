@@ -1,20 +1,18 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
+
 {% load static %}
+
 {% load crispy_forms_tags %}
 
-{% block css_block %}
-<link rel="stylesheet" href="{% static 'css/login.css' %}"> 
-{% endblock %}
-
 {% block body_block %}
-    <div class="container">
-        <div class="row top-space">
+    <div class="container border space-top">
+        <div class="row">
             <div class="col-md-12">
-                <h1>Login to Spuni!</h1>
+                <h1 class="global-subtext center-text"><strong>Login to Spuni!</strong></h1>
                 <form id="login_form" method="post" action="{% url 'spuni:login' %}">
                     {% csrf_token %}
                     {{ login_form|crispy }}
-                    <input type="submit" value="submit" class="btn btn-success" />
+                    <input type="submit" value="Submit" class="btn btn-success" />
                 </form>
             </div>
         </div>

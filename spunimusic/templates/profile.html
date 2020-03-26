@@ -1,21 +1,31 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
+
 {% load static %}
 
-{% block css_block %}
-{% endblock %}
-
 {% block body_block %}
-    {% if user %}
-        {% if username %}
-            <img src="{{ user.photo }}" alt="{{ username }}'s profile picture" />
-            <h1>{{ username }}</h1>
-                {% if songs %}
-                    <ul>
-                        {% for song in songs %}
-                            <li>{{ song.name }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+<div class="container border space-top">
+    {% if not user %}
+        <p>Not user.</p>
+    {% else %}
+        <div class="row">
+            <img class="float-left profile-identity" src="{{ user.photo }}" alt="{{ username }}'s profile picture" />
+            <h1 class="float-right profile-identity">{{ username }}</h1>
+        </div>
+        <hr>
+        {% if songs %}
+            {% for song in songs %}
+                <div class="row space-top">
+                    <div class="col-md-12">
+                        <a href="{% url 'spuni:show_song' song.slug %}">
+                            <img class="song-image float-left" id="thumbnail" src={{song.albumArt}}>
+                        </a>
+                        <p class="song-text"><strong>Song</strong>: {{song.name}}<br><strong>Artist</strong>: {{song.artist}}<br><strong>Likes</strong>: {{song.upvotes}}</p>
+                        <img id="downvote" title="{{song.slug}}" class="song-image float-right" src="{% static 'images/downvote.png' %}">
+                        <img id="upvote" title="{{song.slug}}" class="song-image float-right" src="{% static 'images/upvote.png' %}">
+                    </div>
+                </div>
+            {% endfor %}
         {% endif %}
     {% endif %}
+</div>
 {% endblock %}
