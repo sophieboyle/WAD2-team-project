@@ -180,6 +180,8 @@ def show_profile(request, username):
         context_dict['user'] = None
         context_dict['username'] = None
         context_dict['songs'] = u.upvotedSongs.all()
+
+    print(request.user.is_authenticated)
     return render(request, 'profile.html', context=context_dict) 
 
 """
