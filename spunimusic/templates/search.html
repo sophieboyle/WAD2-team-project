@@ -5,39 +5,41 @@
 {% block body_block %}
 
 <!-- Banner -->
-<div class="container">
-    <div class="row top-space">
+<div class="container-fluid">
+    <div class="row space-top">
         <div class="col-md-12">
             <p class="text-header">
-                <span id="global-text" style="font-weight:bold;font-size:70px">GLOBAL TOP 100 SONGS</span>
-                <br>
-                <span style="font-size:50px">Songs upvoted by your fellow students!</span>
+                <span class="global-text">Here are the top results for your search:</span>
             </p>
         </div>
     </div>
 </div>
-<!-- Banner End -->
+<!-- Banner -->
 
-<!-- Top 100 Table -->
+<!-- Song Table -->
 <div class="container border">
-
-    {% if songs %} 
-    {% for key, value in songs.items %}
-    <div class="row top-space">
-        <div class="col-md-12">
-                <img class="listing-image" id="thumbnail" height="150px" width="150px" src={{value.album_art}}>
-                <p class="listing-text">{{value.name}}
-                    <br>{{value.artist_name}}</p>
-            <img class="listing-button" src="{% static 'images/downvote.png' %}" width=150px height=150px>
-            <img class="listing-button" src="{% static 'images/upvote.png' %}" width=150px height=150px>
+    {% if not songs %}
+        <!-- If there are no songs then post an error. -->
+        <div class="row space-top">
+            <p class="global-subtext">There are no songs present.</p>
         </div>
-    </div>
-    {% endfor %} 
     {% else %}
-    <strong>There are no songs present.</strong> 
+        {% for key, value in songs.items %}
+            <div class="row space-top">
+                <div class="col-md-12">
+                    <a href="{% url 'spuni:show_song' value.slug %}">
+                        <img class="song-image float-left" src={{value.album_art}}>
+                    </a>
+                    <p class="song-text"><strong>Song</strong>: {{value.name}}<br><strong>Artist</strong>: {{value.artist_name}}<br><strong>Likes</strong>: 0</p>
+                    <img id="downvote" title="{{value.slug}}" class="song-image float-right" src="{% static 'images/downvote.png' %}">
+                    <img id="upvote" title="{{value.slug}}" class="song-image float-right" src="{% static 'images/upvote.png' %}">
+                </div>
+            </div>
+        {% endfor %}
     {% endif %}
-
 </div>
-<!-- Top 100 Table End -->
+<!-- Song Table -->
+
+<script src="{% static 'js/votes.js' %}" type="text/javascript"></script>
 
 {% endblock %}
