@@ -31,6 +31,8 @@ def show_song(request, song_name_slug):
 """
     @brief Shows index view on index.html
     @param request
+    @return render of index with a context dictionary containing 
+            songs to display.
 """
 def index(request):
     song_list = Song.objects.order_by('-upvotes')
@@ -48,6 +50,7 @@ def index(request):
 """
     @brief Logout view
     @param request
+    @return Redirects to index
 """
 def logout(request):
     auth_logout(request)
@@ -57,6 +60,9 @@ def logout(request):
 """
     @brief Shows the registration forms for new users to register
     @param request
+    @return Render of the register page with the context dict containing
+            the userform, profileform, and also whether or not the registration
+            was successful.
 """
 def register(request):
     registered = False
@@ -100,7 +106,10 @@ def register(request):
 
 """
     @brief Shows login view for users
-    @param request 
+    @param request
+    @return Redirect if the user logs in successfully,
+            Render of the login form if the request is GET
+            HttpResponse if login fails.
 """
 def user_login(request):
     # Pull details from POST login
@@ -129,6 +138,7 @@ def user_login(request):
 """
     @brief Display form to request to add a song
     @param request
+    @return render
 """
 @login_required
 def add_song(request):
@@ -154,9 +164,10 @@ def add_song(request):
     return render(request, 'add_song.html', {'form':form})
 
 """
-    @brief Shows the given user's profile
-    @param request
-    @param username
+    @brief Shows the search view for a given query
+           Search view is populated by the spotify API
+    @param query: The query e.g. song name to search
+    @return The render
 """
 def search_song(request, query):
     print("---------------")
@@ -167,7 +178,12 @@ def search_song(request, query):
         username = request.user.username
         context_dict["username"] = username
     return render(request, 'search.html', context_dict)
-    
+
+"""
+    @brief Shows the given user's profile
+    @param request Request object
+    @param username Username of the user's profile to show
+"""    
 @login_required
 def show_profile(request, username):
     context_dict = {}
