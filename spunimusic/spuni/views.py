@@ -324,8 +324,10 @@ def downvote(request):
             song.save()
         except ObjectDoesNotExist:
             pass
+    # The song to be downvoted doesn't exist in the model
+    # This choice does not allow for negative downvotes
     except ObjectDoesNotExist:
-        pass
+        return render(request, 'index.html')
     
     if (type(request) == dict):
         return
