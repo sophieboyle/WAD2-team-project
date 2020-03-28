@@ -247,6 +247,9 @@ def upvote(request):
     else:
         username = request.user.username
         slug = request.GET.get('slug', None)
+        name = request.GET.get('name', None)
+        artist = request.GET.get('artist', None)
+        albumArt = request.GET.get('albumArt', None)
 
     # Get objects from database for the given parameters.
     user_profile = UserProfile.objects.get(user=User.objects.get(username=username))
