@@ -31,6 +31,8 @@ def show_song(request, song_name_slug):
 """
     @brief Shows index view on index.html
     @param request
+    @return render of index with a context dictionary containing 
+            songs to display.
 """
 def index(request):
     song_list = Song.objects.order_by('-upvotes')
@@ -48,6 +50,7 @@ def index(request):
 """
     @brief Logout view
     @param request
+    @return Redirects to index
 """
 def logout(request):
     auth_logout(request)
@@ -57,6 +60,9 @@ def logout(request):
 """
     @brief Shows the registration forms for new users to register
     @param request
+    @return Render of the register page with the context dict containing
+            the userform, profileform, and also whether or not the registration
+            was successful.
 """
 def register(request):
     registered = False
@@ -100,7 +106,10 @@ def register(request):
 
 """
     @brief Shows login view for users
-    @param request 
+    @param request
+    @return Redirect if the user logs in successfully,
+            Render of the login form if the request is GET
+            HttpResponse if login fails.
 """
 def user_login(request):
     # Pull details from POST login
@@ -129,6 +138,7 @@ def user_login(request):
 """
     @brief Display form to request to add a song
     @param request
+    @return render
 """
 @login_required
 def add_song(request):
@@ -154,20 +164,40 @@ def add_song(request):
     return render(request, 'add_song.html', {'form':form})
 
 """
-    @brief Shows the given user's profile
-    @param request
-    @param username
+    @brief Shows the search view for a given query
+           Search view is populated by the spotify API
+    @param query: The query e.g. song name to search
+    @return The render
 """
 def search_song(request, query):
     print("---------------")
     print(query)
     print("---------------")
     context_dict = {'songs': search(query)}
+    # Try to check if any of these models already exist
+    for song in context_dict['songs']:
+        try:
+            # If the song already exists, update the dict to reflect the model
+            # instance instead of the spotify result.
+            s = Song.objects.get(slug=context_dict['songs'][song]["slug"])
+            context_dict['songs'][song].update({'name':s.name,
+                                                'artist_name':s.artist,
+                                                'album_art':s.albumArt,
+                                                'slug':s.slug,
+                                                'slug':s.upvotes})
+        except ObjectDoesNotExist:
+            pass
+        
     if request.user.is_authenticated:
         username = request.user.username
         context_dict["username"] = username
     return render(request, 'search.html', context_dict)
-    
+
+"""
+    @brief Shows the given user's profile
+    @param request Request object
+    @param username Username of the user's profile to show
+"""    
 @login_required
 def show_profile(request, username):
     context_dict = {}
@@ -188,7 +218,9 @@ def show_profile(request, username):
     @brief Given a username and songname, either creates
            a new relationship or leaves the relationship
            unchanged. Also increments song's upvote value
-    @param request: A dictionary in the format of {"username":, "songname":} 
+    @param request: A dictionary in the format {"username":, "slug":}
+                    OR format {"username":, "name":, "albumArt":, "artist":}
+                    The above implies a new song is needing to be made (thus all the extra details)
                     OR a request object
 """
 def upvote(request):
@@ -207,29 +239,60 @@ def upvote(request):
     # function. Meanwhile the requests don't use dict.
     if (type(request) == dict):
         username = request["username"]
-        songname = request["songname"]
+
+        # Checks if the slug has been supplied in the dict
+        if ("slug" in request.keys()):
+            slug = request["slug"]
+        else:
+            slug = None
+
+        # If the artist and albumArt was also passed in
+        # this is indicative that we need all the information to create
+        # a new song instance.
+        if (("artist" in request.keys()) and ("albumArt" in request.keys())
+                and ("name" in request.keys())):
+            name = request["name"]
+            artist = request["artist"]
+            albumArt = request["albumArt"]
+        else:
+            name = None
+            artist = None
+            albumArt = None
     else:
         username = request.user.username
-        songname = request.GET.get('songname', None)
+        slug = request.GET.get('slug', None)
+        name = request.GET.get('name', None)
+        artist = request.GET.get('artist', None)
+        albumArt = request.GET.get('albumArt', None)
 
     # Get objects from database for the given parameters.
     user_profile = UserProfile.objects.get(user=User.objects.get(username=username))
     
+    # Check if the song actually exists first
     try:
-        song = Song.objects.get(slug=songname)
-        # Check if the user has already upvoted this song.
-        try:
-            user_profile.upvotedSongs.get(slug=songname)
-            print("Already done.")
-        except ObjectDoesNotExist:
-            # If not, then we upvote the song.
-            user_profile.upvotedSongs.add(song)
-            print(song.upvotes)
-            song.upvotes += 1
-            print(song.upvotes)
-            song.save()
+        song = Song.objects.get(slug=slug)
+    # If it doesn't exist, create the song
     except ObjectDoesNotExist:
-        pass
+        # requires that all details must have been passed in the
+        # request (either dictionary or request object)
+        if ((artist != None) and (albumArt != None) and (name != None)):
+            song = Song.objects.create(name=name, albumArt=albumArt,
+                                        upvotes=0, artist=artist)
+        # A new song instance was unable to be created
+        else:
+            return render(request, 'index.html')
+
+    # Check if the user has already upvoted this song.
+    try:
+        user_profile.upvotedSongs.get(slug=slug)
+        print("Already done.")
+    except ObjectDoesNotExist:
+        # If not, then we upvote the song.
+        user_profile.upvotedSongs.add(song)
+        print(song.upvotes)
+        song.upvotes += 1
+        print(song.upvotes)
+        song.save()
     
     if (type(request) == dict):
         return
@@ -275,8 +338,10 @@ def downvote(request):
             song.save()
         except ObjectDoesNotExist:
             pass
+    # The song to be downvoted doesn't exist in the model
+    # This choice does not allow for negative downvotes
     except ObjectDoesNotExist:
-        pass
+        return render(request, 'index.html')
     
     if (type(request) == dict):
         return
