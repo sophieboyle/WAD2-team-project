@@ -204,7 +204,9 @@ def show_profile(request, username):
     @brief Given a username and songname, either creates
            a new relationship or leaves the relationship
            unchanged. Also increments song's upvote value
-    @param request: A dictionary in the format of {"username":, "songname":} 
+    @param request: A dictionary in the format {"username":, "slug":}
+                    OR format {"username":, "name":, "albumArt":, "artist":}
+                    The above implies a new song is needing to be made (thus all the extra details)
                     OR a request object
 """
 def upvote(request):
@@ -223,29 +225,57 @@ def upvote(request):
     # function. Meanwhile the requests don't use dict.
     if (type(request) == dict):
         username = request["username"]
-        songname = request["songname"]
+
+        # Checks if the slug has been supplied in the dict
+        if ("slug" in request.keys()):
+            slug = request["slug"]
+        else:
+            slug = None
+
+        # If the artist and albumArt was also passed in
+        # this is indicative that we need all the information to create
+        # a new song instance.
+        if (("artist" in request.keys()) and ("albumArt" in request.keys())
+                and ("name" in request.keys())):
+            name = request["name"]
+            artist = request["artist"]
+            albumArt = request["albumArt"]
+        else:
+            name = None
+            artist = None
+            albumArt = None
     else:
         username = request.user.username
-        songname = request.GET.get('songname', None)
+        slug = request.GET.get('slug', None)
 
     # Get objects from database for the given parameters.
     user_profile = UserProfile.objects.get(user=User.objects.get(username=username))
     
+    # Check if the song actually exists first
     try:
-        song = Song.objects.get(slug=songname)
-        # Check if the user has already upvoted this song.
-        try:
-            user_profile.upvotedSongs.get(slug=songname)
-            print("Already done.")
-        except ObjectDoesNotExist:
-            # If not, then we upvote the song.
-            user_profile.upvotedSongs.add(song)
-            print(song.upvotes)
-            song.upvotes += 1
-            print(song.upvotes)
-            song.save()
+        song = Song.objects.get(slug=slug)
+    # If it doesn't exist, create the song
     except ObjectDoesNotExist:
-        pass
+        # requires that all details must have been passed in the
+        # request (either dictionary or request object)
+        if ((artist != None) and (albumArt != None) and (name != None)):
+            song = Song.objects.create(name=name, albumArt=albumArt,
+                                        upvotes=0, artist=artist)
+        # A new song instance was unable to be created
+        else:
+            return render(request, 'index.html')
+
+    # Check if the user has already upvoted this song.
+    try:
+        user_profile.upvotedSongs.get(slug=slug)
+        print("Already done.")
+    except ObjectDoesNotExist:
+        # If not, then we upvote the song.
+        user_profile.upvotedSongs.add(song)
+        print(song.upvotes)
+        song.upvotes += 1
+        print(song.upvotes)
+        song.save()
     
     if (type(request) == dict):
         return
