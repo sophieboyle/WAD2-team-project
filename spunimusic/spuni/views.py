@@ -319,7 +319,7 @@ def upvote(request):
 """
     @brief Given a username and songname, if a relationship
            exists, removes it and decrements the song.
-    @param request: A dictionary in the format of {"username":, "songname":} 
+    @param request: A dictionary in the format of {"username":, "slug":} 
                     OR a request object 
 """
 def downvote(request):
@@ -337,19 +337,19 @@ def downvote(request):
     # function. Meanwhile the requests don't use dict.
     if (type(request) == dict):
         username = request["username"]
-        songname = request["songname"]
+        slug = request["slug"]
     else:
         username = request.user.username
-        songname = request.GET.get('songname', None)
+        slug = request.GET.get('slug', None)
 
     # Get objects from database for the given parameters.
     user_profile = UserProfile.objects.get(user=User.objects.get(username=username))
 
     try:
-        song = Song.objects.get(slug=songname)
+        song = Song.objects.get(slug=slug)
         # Check if the user has already downvoted this song.
         try:
-            user_profile.upvotedSongs.get(slug=songname)
+            user_profile.upvotedSongs.get(slug=slug)
             user_profile.upvotedSongs.remove(song)
             print(song.upvotes)
             song.upvotes -= 1
