@@ -174,12 +174,15 @@ def search_song(request, query):
     print(query)
     print("---------------")
     context_dict = {'songs': search(query)}
+    print(context_dict['songs'])
     # Try to check if any of these models already exist
     for song in context_dict['songs']:
         try:
             # If the song already exists, update the dict to reflect the model
             # instance instead of the spotify result.
-            s = Song.objects.get(slug=context_dict['songs'][song]["slug"])
+            s = Song.objects.get(slug=context_dict['songs'][song]["slug"],
+                                    name=context_dict['songs'][song]["name"],
+                                    artist=context_dict['songs'][song]["artist_name"])
             context_dict['songs'][song].update({'name':s.name,
                                                 'artist_name':s.artist,
                                                 'album_art':s.albumArt,
