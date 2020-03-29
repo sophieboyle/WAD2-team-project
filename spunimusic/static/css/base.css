@@ -53,16 +53,28 @@ body, html {
 
 .song-text {
     margin-left: 2%;
-    font-size: xx-large;
+    font-size: 30px;
     float: left;
+	color:white;
 }
 
+.song-text strong{
+	color:#4c515d;
+}
 #upvote, #downvote {
     cursor: pointer;
 }
 
 .float-left {
     float: left;
+}
+
+.test{
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 0px;
+    padding-left: 0px;
 }
 
 .float-right {
