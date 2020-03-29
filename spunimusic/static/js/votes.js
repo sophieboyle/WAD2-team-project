@@ -1,10 +1,14 @@
 // Sends a request to the backend to like/dislike a song.
-function sendRequest(requestUrl, song) {
+function sendRequest(requestUrl, username, slug, song, albumart, artist) {
     $.ajax({
         type: "GET",
         url: requestUrl,
         data: {
-            "songname": song
+            "username": username,
+            "slug": slug,
+            "name": song,
+            "albumArt": albumart,
+            "artist": artist
         },
         dataType: "json"
     });
@@ -33,7 +37,21 @@ function changeValue(element, action) {
 
 // When a user clicks the upvote or the downvote button.
 $(document).on("click", "#upvote, #downvote", function() {
-    let songname = $(this).attr("title");
+    let rx;
+    let parent = $(this).parent()[0];
+    let parentInnerText = parent.innerText;
+    
+    // Getting the slug.
+    let slug = $(this).attr("title");
+
+    // Getting the username.
+    let username = "";
+
+    // Song name.
+    rx = /Song: (.[^\\]*)/g;
+    let songname = rx.exec(parentInnerText);
+    console.log(songname);
+    
 
     // If the user pressed the upvote button.
     if ($(this).attr("id") == "upvote") {
