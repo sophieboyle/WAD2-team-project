@@ -187,9 +187,10 @@ def search_song(request, query):
                                                 'album_art':s.albumArt,
                                                 'slug':s.slug,
                                                 'slug':s.upvotes})
+        # If the entry does not exist, set upvotes to default = 0
         except ObjectDoesNotExist:
-            pass
-        
+            context_dict['songs'][song]["upvotes"] = 0
+
     if request.user.is_authenticated:
         username = request.user.username
         context_dict["username"] = username
