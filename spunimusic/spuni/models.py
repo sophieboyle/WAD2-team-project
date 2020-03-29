@@ -20,8 +20,14 @@ class Song(models.Model):
     artist = models.CharField(max_length=ARTIST_MAX_LENGTH)
     slug = models.SlugField(unique=True)
 
+    class Meta:
+        # Composite primary key
+        unique_together = ("name", "artist")
+
     def save(self, *args, **kwargs):
+        # Slug consists of a combination of both name and artist
         self.slug = slugify(self.name)
+        self.slug += '-' + slugify(self.artist)
         super(Song, self).save(*args, **kwargs)
 
     def __str__(self):

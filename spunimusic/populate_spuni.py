@@ -44,11 +44,11 @@ def populate():
         {'username':'shibe1',
             'password':'iamshibe1',
             'photo':'https://i.pinimg.com/originals/a3/af/17/a3af17efcaf49018a2188c9abb96acc4.png',
-            'upvotedSongs':[Song.objects.get(slug='renai-circulation')]},
+            'upvotedSongs':[Song.objects.get(name='Renai Circulation', artist="Kana Hanazawa")]},
         {'username':'shibe2',
             'password':'iamshibe2',
             'photo':'https://66.media.tumblr.com/9aaa6bb6b1d8eef1ad7b7c08fc6d23bf/tumblr_oxz891R1jI1s9dacgo8_250.gifv',
-            'upvotedSongs':[Song.objects.get(slug='white-room'), Song.objects.get(slug='renai-circulation')]}
+            'upvotedSongs':[Song.objects.get(name='White Room', artist="Cream"), Song.objects.get(name='Renai Circulation', artist="Kana Hanazawa")]}
     ]
     # Populate userProfile
     for user in users:
