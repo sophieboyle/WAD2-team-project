@@ -10,6 +10,7 @@ from django.contrib.auth import logout as auth_logout
 from spuni.forms import UserForm, UserProfileForm, SongForm, LoginForm
 from spuni.spotifyapi import search
 from django.core.exceptions import ObjectDoesNotExist
+from django.template.defaultfilters import slugify
 
 """
     @brief Shows the song details for the given song on song.html
@@ -176,6 +177,11 @@ def search_song(request, query):
     context_dict = {'songs': search(query)}
     # Try to check if any of these models already exist
     for song in context_dict['songs']:
+        # Update all results' slugs to match the unique representation of our model's slugs
+        # i.e. All slugs should now consist of name+artist. (spotify slugs by default are just name)
+        context_dict['songs'][song]['slug'] = (slugify(context_dict['songs'][song]['name'])
+                                                + '-'
+                                                + slugify(context_dict['songs'][song]['artist_name']))
         try:
             # If the song already exists, update the dict to reflect the model
             # instance instead of the spotify result.
@@ -190,6 +196,10 @@ def search_song(request, query):
         # If the entry does not exist, set upvotes to default = 0
         except ObjectDoesNotExist:
             context_dict['songs'][song]["upvotes"] = 0
+
+    print("---------------")
+    print(context_dict)
+    print("---------------")
 
     if request.user.is_authenticated:
         username = request.user.username
