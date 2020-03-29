@@ -174,7 +174,6 @@ def search_song(request, query):
     print(query)
     print("---------------")
     context_dict = {'songs': search(query)}
-    print(context_dict['songs'])
     # Try to check if any of these models already exist
     for song in context_dict['songs']:
         try:
@@ -221,9 +220,12 @@ def show_profile(request, username):
     @brief Given a username and songname, either creates
            a new relationship or leaves the relationship
            unchanged. Also increments song's upvote value
-    @param request: A dictionary in the format {"username":, "slug":}
-                    OR format {"username":, "name":, "albumArt":, "artist":}
-                    The above implies a new song is needing to be made (thus all the extra details)
+    @param request: A dictionary in the format: 
+                    {"username":, "slug":, "name":, "albumArt":, "artist":}
+                    "name", "albumArt", and "artist", may be ommitted if it is
+                    known that the model instance already exists (e.g. on the index page),
+                    however these must be included in any page which may include song instances
+                    that do not already exist in the database (e.g. on the search page).
                     OR a request object
 """
 def upvote(request):
@@ -294,6 +296,7 @@ def upvote(request):
         user_profile.upvotedSongs.add(song)
         print(song.upvotes)
         song.upvotes += 1
+        print("UPVOTED")
         print(song.upvotes)
         song.save()
     
@@ -337,7 +340,10 @@ def downvote(request):
         try:
             user_profile.upvotedSongs.get(slug=songname)
             user_profile.upvotedSongs.remove(song)
+            print(song.upvotes)
             song.upvotes -= 1
+            print("DOWNVOTED")
+            print(song.upvotes)
             song.save()
         except ObjectDoesNotExist:
             pass
