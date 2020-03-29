@@ -26,6 +26,11 @@ body, html {
     padding: 30px;
 }
 
+.song-bar{
+	background-color:#212529;
+	margin-bottom:15px;
+}
+
 .global-text, .global-subtext {
     color: white;
 }
@@ -53,9 +58,9 @@ body, html {
 
 .song-text {
     margin-left: 2%;
-    font-size: 30px;
+    font-size: 29px;
     float: left;
-	color:white;
+	color:#a6a6a6;
 }
 
 .song-text strong{
