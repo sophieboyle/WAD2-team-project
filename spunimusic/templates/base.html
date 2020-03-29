@@ -49,12 +49,12 @@
                 <div class="col-xs-4 navbar-nav mx-auto">
                     {% if user.username %}
                         <div class="btn-group">
-                            <a class="nav-link text btn btn-secondary" href="/spuni/profile/{{ user.username }}">My Profile</a>
+                            <a id="profile" class="nav-link text btn btn-secondary" href="/spuni/profile/{{ user.username }}">My Profile</a>
                             <a class="nav-link text btn btn-secondary" href="{% url 'spuni:logout' %}">Logout</a>
                         </div>
                     {% else %}
                         <div class="btn-group">
-                            <a class="nav-link text btn btn-secondary" href="{% url 'spuni:register' %}">Sign Up</a>
+                            <a id="register" class="nav-link text btn btn-secondary" href="{% url 'spuni:register' %}">Sign Up</a>
                             <a class="nav-link text btn btn-secondary" href="{% url 'spuni:login' %}">Sign In</a>
                         </div>
                     {% endif %}

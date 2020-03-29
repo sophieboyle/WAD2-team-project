@@ -239,7 +239,7 @@ def upvote(request):
         if (not request.user.is_authenticated):
             print("Not authenticated.")
             return render(request, 'index.html')
-
+   
     # We have the dict versus normal because the population script also uses the upvote
     # function. Meanwhile the requests don't use dict.
     if (type(request) == dict):
@@ -286,7 +286,7 @@ def upvote(request):
         # A new song instance was unable to be created
         else:
             return render(request, 'index.html')
-
+    
     # Check if the user has already upvoted this song.
     try:
         user_profile.upvotedSongs.get(slug=slug)

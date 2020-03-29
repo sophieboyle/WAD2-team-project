@@ -1,10 +1,14 @@
 // Sends a request to the backend to like/dislike a song.
-function sendRequest(requestUrl, song) {
+function sendRequest(requestUrl, username, slug, song, albumart, artist) {
     $.ajax({
         type: "GET",
         url: requestUrl,
         data: {
-            "songname": song
+            "username": username,
+            "slug": slug,
+            "name": song,
+            "albumArt": albumart,
+            "artist": artist
         },
         dataType: "json"
     });
@@ -33,19 +37,44 @@ function changeValue(element, action) {
 
 // When a user clicks the upvote or the downvote button.
 $(document).on("click", "#upvote, #downvote", function() {
-    let songname = $(this).attr("title");
+    let rx;
+    let username = "";
+    let parent = $(this).parent()[0];
+    let parentInnerText = parent.innerText;
+    
+    // Getting the slug.
+    let slug = $(this).attr("title");
+
+    // Getting the username.
+    if ($("#profile").length != 0) {
+        let usernameHref = $("#profile")[0].attributes["href"].nodeValue;
+        rx = /\/profile\/(\w+)/g
+        username = rx.exec(usernameHref)[1];
+    }
+
+    // Song name.
+    rx = /Song: (.[^\\]*)/g;
+    let songname = rx.exec(parentInnerText)[1].split("\n")[0];
+    
+    // Artist name.
+    rx = /Artist: (.[^\\]*)/g
+    let artistname = rx.exec(parentInnerText)[1].split("\n")[0];
+
+    // Album
+    let albumart = parent.childNodes[1].childNodes[1].attributes[1].nodeValue;
+    
 
     // If the user pressed the upvote button.
     if ($(this).attr("id") == "upvote") {
         // If it has been already selected then downvote.
         if ($(this).hasClass("selected")) {
             $(this).removeClass("selected");
-            sendRequest("/downvote", songname);
+            sendRequest("/downvote", username, slug, songname, albumart, artistname);
             changeValue(this, "decrement");
         // Otherwise upvote and highlight.
         } else {
             $(this).addClass("selected");
-            sendRequest("/upvote", songname);
+            sendRequest("/upvote", username, slug, songname, albumart, artistname);
             changeValue(this, "increment");
         }
 
@@ -60,12 +89,12 @@ $(document).on("click", "#upvote, #downvote", function() {
         // If it has been already selected then upvote.
         if ($(this).hasClass("selected")) {
             $(this).removeClass("selected");
-            sendRequest("/upvote", songname);
+            sendRequest("/upvote", username, slug, songname, albumart, artistname);
             changeValue(this, "increment");
         // Otherwise upvote and highlight.
         } else {
             $(this).addClass("selected");
-            sendRequest("/downvote", songname);
+            sendRequest("/downvote", username, slug, songname, albumart, artistname);
             changeValue(this, "decrement");
         }
 
