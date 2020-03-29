@@ -27,7 +27,7 @@
         {% else %}
             {% for song in songs %}
                 <div class="row song-bar" >
-                    <div class="test">
+                    <div class="row-format">
                         <a href="{% url 'spuni:show_song' song.slug %}" >
                             <img class="song-image float-left"  src={{song.albumArt}}>
 							<p class="song-text"><strong>Song:</strong> {{song.name}}<br><strong>Artist:</strong> {{song.artist}}<br><strong>Likes:</strong> {{song.upvotes}}</p>

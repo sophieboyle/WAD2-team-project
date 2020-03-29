@@ -4,16 +4,16 @@
 
 {% block body_block %}
 <div class="container border space-top">
-    <div class="row space-top space-bottom">
-        <div class="col-md-12">
-            <img src="{{ song.albumArt }}" class="big-image float-left">
-            <p class="song-text"><strong>Song</strong>: {{song.name}}<br><strong>Artist</strong>: {{song.artist}}<br><strong>Likes</strong>: {{song.upvotes}}</p>
-            <div class="col-md-6 float-left">
-                <img class="song-image-small float-left" title="{{song.slug}}" src="{% static 'images/upvote.png' %}">
-                <img class="song-image-small space-left" title="{{song.slug}}" src="{% static 'images/downvote.png' %}">
-            </div>
-        </div>
-    </div>
+                <div class="row song-bar" >
+                    <div class="row-format">
+                        <a href="{% url 'spuni:show_song' song.slug %}" >
+                            <img class="song-image float-left"  src={{song.albumArt}}>
+							<p class="song-text"><strong>Song:</strong> {{song.name}}<br><strong>Artist:</strong> {{song.artist}}<br><strong>Likes:</strong> {{song.upvotes}}</p>
+                        </a>
+						<img id="downvote" title="{{song.slug}}" class="song-image float-right" src="{% static 'images/downvote.png' %}">
+                        <img id="upvote" title="{{song.slug}}" class="song-image float-right" src="{% static 'images/upvote.png' %}">
+                    </div>
+                </div>
 </div>
 
 <script src="{% static 'js/votes.js' %}" type="text/javascript"></script>
