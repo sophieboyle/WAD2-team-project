@@ -33,6 +33,8 @@ body, html {
 	border-radius:5px;
 }
 
+.over
+
 .global-text, .global-subtext {
     color: white;
 }
@@ -63,11 +65,17 @@ body, html {
     font-size: 29px;
     float: left;
 	color:#a6a6a6;
+	white-space: nowrap; 
+	width: 500px; 
+	overflow: hidden;
+	text-overflow: ellipsis; 
 }
 
 .song-text strong{
 	color:#4c515d;
 }
+
+
 #upvote, #downvote {
     cursor: pointer;
 }
