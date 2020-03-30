@@ -171,9 +171,6 @@ def add_song(request):
     @return The render
 """
 def search_song(request, query):
-    print("---------------")
-    print(query)
-    print("---------------")
     context_dict = {'songs': search(query)}
     # Try to check if any of these models already exist
     for song in context_dict['songs']:
@@ -196,10 +193,6 @@ def search_song(request, query):
         # If the entry does not exist, set upvotes to default = 0
         except ObjectDoesNotExist:
             context_dict['songs'][song]["upvotes"] = 0
-
-    print("---------------")
-    print(context_dict)
-    print("---------------")
 
     if request.user.is_authenticated:
         username = request.user.username
