@@ -2,6 +2,85 @@ from django.test import TestCase
 from spuni.models import Song, UserProfile
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.urls import reverse
+
+class IndexViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        pass
+
+    def test_location_spuni(self):
+        response = self.client.get('/spuni/')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_location_blank(self):
+        response = self.client.get('')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_url_accessibility(self):
+        response = self.client.get(reverse('spuni:index'))
+        self.assertEquals(response.status_code, 200)
+    
+    def test_correct_template(self):
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index.html')
+
+class ShowSongViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Song.objects.create(name="Shiba Inus are the Best", artist="shibe1",
+                    albumArt="https://66.media.tumblr.com/1c0f4fbad5ca9e7262cf4a5b5ba8db51/tumblr_oxz891R1jI1s9dacgo10_250.gifv",
+                    upvotes=10)
+    
+    def test_slug_param(self):
+        slug = "shiba-inus-are-the-best-shibe1"
+        song = Song.objects.get(slug=slug)
+        response = self.client.get(reverse('spuni:show_song', args=(slug,)))
+        self.assertEqual(response.status_code, 200)
+
+    def test_correct_template(self):
+        slug = "shiba-inus-are-the-best-shibe1"
+        song = Song.objects.get(slug=slug)
+        response = self.client.get(reverse('spuni:show_song', args=(slug,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'song.html')
+    
+    def test_location(self):
+        slug = "shiba-inus-are-the-best-shibe1"
+        response = self.client.get('/spuni/song/'+slug+'/')
+        self.assertEqual(response.status_code, 200)
+
+class ShowProfileViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        u = User.objects.create_user(username="testshibe")
+        u.set_password("iamtestshibe")
+        u.save()
+        UserProfile.objects.create(user=u,
+                                    photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
+
+        u2 = User.objects.create_user(username="authshibe")
+        u2.set_password("iamauthshibe")
+        u2.save()
+        UserProfile.objects.create(user=u2,
+                                    photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
+
+    def test_username_param(self):
+        login = self.client.login(username="authshibe", password="iamauthshibe")
+        response = self.client.get(reverse('spuni:show_profile', args=("testshibe",)))
+        self.assertEqual(response.status_code, 200)
+    
+    def test_correct_template(self):
+        login = self.client.login(username="authshibe", password="iamauthshibe")
+        response = self.client.get(reverse('spuni:show_profile', args=("testshibe",)))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "profile.html")
+    
+    def test_location(self):
+        login = self.client.login(username="authshibe", password="iamauthshibe")
+        response = self.client.get('/spuni/profile/testshibe/')
+        self.assertEqual(response.status_code, 200)
 
 class SongModelTest(TestCase):
     @classmethod
@@ -89,4 +168,3 @@ class UserProfileModelTest(TestCase):
         up = UserProfile.objects.get(id=1)
         max_length = up._meta.get_field("photo").max_length
         self.assertEquals(max_length, 200)
-    
