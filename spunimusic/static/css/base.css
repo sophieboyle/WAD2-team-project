@@ -4,9 +4,6 @@ body, html {
     font-family: 'Oswald', sans-serif;
 }
 
-.hover:hover{
-	background-color:blue;
-}
 
 #search-bar {
     max-width: 600px;
@@ -30,7 +27,6 @@ body, html {
 .song-bar{
 	background-color:#212529;
 	margin-bottom:15px;
-	border-radius:5px;
 }
 
 .over
@@ -60,19 +56,33 @@ body, html {
     display: block;
 }
 
+
+.voter{
+	margin:0px auto 15px auto;
+	background-color:#212529;
+	border-radius:0px 5px 5px 0px;
+}
+
+
 .song-text {
-    margin-left: 2%;
-    font-size: 29px;
+    margin:auto;
+    font-size: 20px;
+	font-weight:bold;
     float: left;
-	color:#a6a6a6;
+	color:white;
 	white-space: nowrap; 
 	width: 500px; 
 	overflow: hidden;
 	text-overflow: ellipsis; 
 }
 
-.song-text strong{
-	color:#4c515d;
+.col a:link{
+	text-decoration:none !important;
+	color:blue;
+}
+
+.song-text span{
+	color:#a6a6a6;
 }
 
 
