@@ -138,6 +138,18 @@ class UserLoginTest(TestCase):
         response = self.client.post("/spuni/login/", credentials, follow=True)
         self.assertTrue(response.context["user"].is_active)        
 
+    def test_location(self):
+        response = self.client.get("/spuni/login/")
+        self.assertEquals(response.status_code, 200)
+    
+    def test_name(self):
+        response = self.client.get(reverse("spuni:login"))
+        self.assertEquals(response.status_code, 200)
+    
+    def test_uses_correct_template(self):
+        response = self.client.get(reverse("spuni:login"))
+        self.assertTemplateUsed("login.html")
+
 class SongModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
