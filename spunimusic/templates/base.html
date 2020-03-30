@@ -31,22 +31,23 @@
 
     <body>
         <!-- Navigation Bar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
-            <div class="container-fluid collapse navbar-collapse">
-
-                <!-- Spuni Logo -->
-                <div class="col-xs-4 navbar-nav mx-auto">
-                    <a href="{% url 'spuni:index'%}"><img src="{% static 'images/spuni_100x69.png' %}" alt="Spuni Logo"></a>
-                </div>
-
-                <!-- Search Bar -->
-                <div class="col-xs-4 navbar-nav mx-auto">
-                    <input id="search-bar" class="form-control text-center top-padding-search" type="text" placeholder="Search for your songs.">
-                </div>
-                
-                <!-- Buttons -->
-                <div class="col-xs-4 navbar-nav mx-auto">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+			<a class="navbar-brand" href="{% url 'spuni:index'%}"><img src="{% static 'images/spuni_100x69.png' %}" alt="Spuni Logo"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item ">
+						<!--nav bar items go here -->
+						<input id="search-bar" class="form-control text-center top-padding-search" type="text" placeholder="Search for your songs.">
+					</li>
+				</ul>
+			
+				
+				
+				<div class="col-xs-4 navbar-nav ml-auto">
                     {% if user.username %}
                         <div class="btn-group">
                             <a id="profile" class="nav-link text btn btn-secondary" href="/spuni/profile/{{ user.username }}">My Profile</a>
@@ -59,11 +60,10 @@
                         </div>
                     {% endif %}
                 </div>
-
-            </div>
-
-        </nav>
-        <!-- Navigation Bar -->
+				
+			</div>
+		</nav>
+		<!-- Navigation Bar -->
 
         <!-- Main Body -->
         {% block body_block %}
