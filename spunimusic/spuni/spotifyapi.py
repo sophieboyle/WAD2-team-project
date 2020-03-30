@@ -14,5 +14,4 @@ def search(term):
         slug = ''.join(char for char in song_name.replace(" ", "-").lower() if char.isalnum() or char == "-")
         slug = unidecode.unidecode(slug)
         response[idx]= {'name':song_name, 'artist_name':artist_name, 'album_art':album_art, 'slug':slug}
-    print(response)
     return response
