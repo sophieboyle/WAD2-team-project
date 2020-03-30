@@ -100,6 +100,21 @@ class SearchViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "search.html")
 
+class UserLoginTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        u = User.objects.create_user(username="testshibe")
+        u.set_password("iamtestshibe")
+        u.save()
+        UserProfile.objects.create(user=u,
+                                    photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
+
+    def test_login(self):
+        credentials = {"username" : "testshibe",
+                        "password" : "iamtestshibe"}
+        response = self.client.post("/spuni/login/", credentials, follow=True)
+        self.assertTrue(response.context["user"].is_active)        
+
 class SongModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
