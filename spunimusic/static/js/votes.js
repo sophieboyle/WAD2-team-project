@@ -19,7 +19,7 @@ function changeValue(element, action) {
     let parent = $(element).parent();
     let tElement = $(parent).find(".song-text")[0];
     // Getting the current upvotes.
-    let rx = /Likes<\/strong>: (\d+)/g;
+    let rx = /Likes:<\/strong> (\d+)/g;
     let value = rx.exec(tElement.outerHTML);
     let upvotes = parseInt(value[1]);
 
@@ -31,7 +31,7 @@ function changeValue(element, action) {
     }
 
     // Replacing the value.
-    let cElement = tElement.outerHTML.replace(/Likes<\/strong>: (\d+)/g, "Likes</strong>: "+upvotes);
+    let cElement = tElement.outerHTML.replace(/Likes:<\/strong> (\d+)/g, "Likes:</strong> "+upvotes);
     $(tElement).replaceWith(cElement);
 }
 

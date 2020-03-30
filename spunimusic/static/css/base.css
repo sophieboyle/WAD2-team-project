@@ -4,8 +4,9 @@ body, html {
     font-family: 'Oswald', sans-serif;
 }
 
+
 #search-bar {
-    max-width: 400px;
+    max-width: 600px;
     width: 100%;
 }
 
@@ -17,14 +18,18 @@ body, html {
     margin-left: 20px;
 }
 
-.space-bottom {
-    margin-bottom: 10px;
-}
 
 .text-header {
     text-align: center;
     padding: 30px;
 }
+
+.song-bar{
+	background-color:#212529;
+	margin-bottom:15px;
+}
+
+.over
 
 .global-text, .global-subtext {
     color: white;
@@ -51,11 +56,35 @@ body, html {
     display: block;
 }
 
-.song-text {
-    margin-left: 2%;
-    font-size: xx-large;
-    float: left;
+
+.voter{
+	margin:0px auto 15px auto;
+	background-color:#212529;
+	border-radius:0px 5px 5px 0px;
 }
+
+
+.song-text {
+    margin:auto;
+    font-size: 20px;
+	font-weight:bold;
+    float: left;
+	color:white;
+	white-space: nowrap; 
+	width: 500px; 
+	overflow: hidden;
+	text-overflow: ellipsis; 
+}
+
+.col a:link{
+	text-decoration:none !important;
+	color:blue;
+}
+
+.song-text span{
+	color:#a6a6a6;
+}
+
 
 #upvote, #downvote {
     cursor: pointer;
@@ -63,6 +92,14 @@ body, html {
 
 .float-left {
     float: left;
+}
+
+.row-format{
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 0px;
+    padding-left: 0px;
 }
 
 .float-right {

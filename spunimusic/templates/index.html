@@ -18,7 +18,7 @@
 <!-- Banner -->
 
 <!-- Song Table -->
-<div class="container border">
+<div class="container">
         {% if not songs %}
             <!-- If there are no songs then post an error. -->
             <div class="row space-top">
@@ -26,16 +26,28 @@
             </div>
         {% else %}
             {% for song in songs %}
-                <div class="row space-top">
-                    <div class="col-md-12">
-                        <a href="{% url 'spuni:show_song' song.slug %}">
-                            <img class="song-image float-left" src={{song.albumArt}}>
-                        </a>
-                        <p class="song-text"><strong>Song</strong>: {{song.name}}<br><strong>Artist</strong>: {{song.artist}}<br><strong>Likes</strong>: {{song.upvotes}}</p>
-                        <img id="downvote" title="{{song.slug}}" class="song-image float-right" src="{% static 'images/downvote.png' %}">
-                        <img id="upvote" title="{{song.slug}}" class="song-image float-right" src="{% static 'images/upvote.png' %}">
-                    </div>
-                </div>
+			<div class="row">
+				<div class="col">
+					<a class="song-link" href="{% url 'spuni:show_song' song.slug %}" >
+					<div class="media song-bar">
+						<img class="align-self-center mr-3 song-image" src={{song.albumArt}}>
+						<div class="media-body song-text">
+							<p class="mt-0 song-name">{{song.name}}</p>
+							<p><span>By</span> {{song.artist}}</p>
+							<p class="mb-0 upvotes">{{song.upvotes}} <span>Likes</span></p>
+						</div>
+					</div>
+					</a>
+				</div>
+				<div class="col-md-auto voter">
+					{% if user.username %}
+					<img id="upvote" title="{{song.slug}}" alt="upvote" class="song-image " src="{% static 'images/upvote.png' %}">
+					<img id="downvote" title="{{song.slug}}" alt="downvote" class="song-image " src="{% static 'images/downvote.png' %}">
+					{% else %}
+					<h1 style="color:white;"> login to vote!</h1>
+					{% endif %}
+				</div>
+			</div>
             {% endfor %}
         {% endif %}
 </div>

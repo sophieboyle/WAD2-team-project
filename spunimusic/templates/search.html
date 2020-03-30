@@ -17,7 +17,7 @@
 <!-- Banner -->
 
 <!-- Song Table -->
-<div class="container border">
+<div class="container">
     {% if not songs %}
         <!-- If there are no songs then post an error. -->
         <div class="row space-top">
@@ -25,16 +25,17 @@
         </div>
     {% else %}
         {% for key, value in songs.items %}
-            <div class="row space-top">
-                <div class="col-md-12">
+            <div class="row song-bar">
+                <div class="row-format">
                     <a href="{% url 'spuni:show_song' value.slug %}">
                         <img class="song-image float-left" src={{value.album_art}}>
+						<p class="song-text"><strong>Song</strong>: {{value.name}}<br><strong>Artist</strong>: {{value.artist_name}}<br><strong>Likes:</strong> {{value.upvotes}}</p>
                     </a>
-                    <p class="song-text"><strong>Song</strong>: {{value.name}}<br><strong>Artist</strong>: {{value.artist_name}}<br><strong>Likes</strong>: {{value.upvotes}}</p>
-                    <img id="downvote" title="{{value.slug}}" class="song-image float-right" src="{% static 'images/downvote.png' %}">
+					<img id="downvote" title="{{value.slug}}" class="song-image float-right" src="{% static 'images/downvote.png' %}">
                     <img id="upvote" title="{{value.slug}}" class="song-image float-right" src="{% static 'images/upvote.png' %}">
                 </div>
             </div>
+			
         {% endfor %}
     {% endif %}
 </div>
