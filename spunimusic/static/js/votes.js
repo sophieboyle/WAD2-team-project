@@ -16,12 +16,14 @@ function sendRequest(requestUrl, username, slug, song, albumart, artist) {
 
 // Increases/Decreases an element.
 function changeValue(element, action) {
-    let parent = $(element).parent();
-    let tElement = $(parent).find(".song-text")[0];
+    let parent = $(element).parent().parent()[0];
+    let tElement = $(parent)[0];
+
     // Getting the current upvotes.
-    let rx = /Likes:<\/strong> (\d+)/g;
+    let rx = />(\d+) <span>Likes/g;
     let value = rx.exec(tElement.outerHTML);
     let upvotes = parseInt(value[1]);
+    let beforeUpvotes = upvotes;
 
     // Change the value.
     if (action == "increment") {
@@ -31,7 +33,7 @@ function changeValue(element, action) {
     }
 
     // Replacing the value.
-    let cElement = tElement.outerHTML.replace(/Likes:<\/strong> (\d+)/g, "Likes:</strong> "+upvotes);
+    let cElement = tElement.outerHTML.replace(beforeUpvotes, upvotes);
     $(tElement).replaceWith(cElement);
 }
 
@@ -39,9 +41,8 @@ function changeValue(element, action) {
 $(document).on("click", "#upvote, #downvote", function() {
     let rx;
     let username = "";
-    let parent = $(this).parent()[0];
+    let parent = $(this).parent().parent()[0];
     let parentInnerText = parent.innerText;
-    
     // Getting the slug.
     let slug = $(this).attr("title");
 
@@ -53,17 +54,14 @@ $(document).on("click", "#upvote, #downvote", function() {
     }
 
     // Song name.
-    rx = /Song: (.[^\\]*)/g;
-    let songname = rx.exec(parentInnerText)[1].split("\n")[0];
-    
+    let songname = parentInnerText.split("\n\n")[0];
+
     // Artist name.
-    rx = /Artist: (.[^\\]*)/g
-    let artistname = rx.exec(parentInnerText)[1].split("\n")[0];
+    let artistname = parentInnerText.split("\n\n")[1].split(" ")[1];
 
     // Album
     let albumart = parent.childNodes[1].childNodes[1].attributes[1].nodeValue;
     
-
     // If the user pressed the upvote button.
     if ($(this).attr("id") == "upvote") {
         // If it has been already selected then downvote.
