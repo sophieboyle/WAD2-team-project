@@ -2,6 +2,29 @@ from django.test import TestCase
 from spuni.models import Song, UserProfile
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.urls import reverse
+
+class IndexViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        pass
+
+    def test_location_spuni(self):
+        response = self.client.get('/spuni/')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_location_blank(self):
+        response = self.client.get('')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_url_accessibility(self):
+        response = self.client.get(reverse('index'))
+        self.assertEquals(response.status_code, 200)
+    
+    def test_correct_template(self):
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index.html')
 
 class SongModelTest(TestCase):
     @classmethod
@@ -89,4 +112,3 @@ class UserProfileModelTest(TestCase):
         up = UserProfile.objects.get(id=1)
         max_length = up._meta.get_field("photo").max_length
         self.assertEquals(max_length, 200)
-    
