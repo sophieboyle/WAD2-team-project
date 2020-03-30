@@ -81,6 +81,24 @@ class ShowProfileViewTest(TestCase):
         login = self.client.login(username="authshibe", password="iamauthshibe")
         response = self.client.get('/spuni/profile/testshibe/')
         self.assertEqual(response.status_code, 200)
+    
+class SearchViewTest(TestCase):
+    def test_location(self):
+        response = self.client.get('/spuni/search/redbone/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_query_with_spaces(self):
+        response = self.client.get(reverse("spuni:search_song", args=("Platinum Disco",)))
+        self.assertEqual(response.status_code, 200)
+    
+    def test_get_by_name(self):
+        response = self.client.get(reverse("spuni:search_song", args=("redbone",)))
+        self.assertEqual(response.status_code, 200)
+    
+    def test_correct_template(self):
+        response = self.client.get(reverse("spuni:search_song", args=("redbone",)))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "search.html")
 
 class SongModelTest(TestCase):
     @classmethod
