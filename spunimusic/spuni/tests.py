@@ -18,13 +18,33 @@ class IndexViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_url_accessibility(self):
-        response = self.client.get(reverse('index'))
+        response = self.client.get(reverse('spuni:index'))
         self.assertEquals(response.status_code, 200)
     
     def test_correct_template(self):
         response = self.client.get(reverse('index'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
+
+class ShowSongViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Song.objects.create(name="Shiba Inus are the Best", artist="shibe1",
+                    albumArt="https://66.media.tumblr.com/1c0f4fbad5ca9e7262cf4a5b5ba8db51/tumblr_oxz891R1jI1s9dacgo10_250.gifv",
+                    upvotes=10)
+    
+    def test_slug_param(self):
+        slug = "shiba-inus-are-the-best-shibe1"
+        song = Song.objects.get(slug=slug)
+        response = self.client.get(reverse('spuni:show_song', args=(slug,)))
+        self.assertEqual(response.status_code, 200)
+
+    def test_correct_template(self):
+        slug = "shiba-inus-are-the-best-shibe1"
+        song = Song.objects.get(slug=slug)
+        response = self.client.get(reverse('spuni:show_song', args=(slug,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'song.html')
 
 class SongModelTest(TestCase):
     @classmethod
