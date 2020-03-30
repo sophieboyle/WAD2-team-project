@@ -83,6 +83,12 @@ class ShowProfileViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
     
 class SearchViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Song.objects.create(name="Redbone", artist="Childish Gambino",
+                            albumArt='https://i.scdn.co/image/ab67616d0000b273b08b996d08001270adc8b555',
+                            upvotes=55)
+
     def test_location(self):
         response = self.client.get('/spuni/search/redbone/')
         self.assertEqual(response.status_code, 200)
@@ -99,6 +105,23 @@ class SearchViewTest(TestCase):
         response = self.client.get(reverse("spuni:search_song", args=("redbone",)))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "search.html")
+    
+    def test_context_songs_have_upvote_field(self):
+        response = self.client.get(reverse("spuni:search_song", args=("redbone",)))
+        self.assertTrue("upvotes" in response.context['songs'][0])
+    
+    def test_context_has_existing_models(self):
+        response = self.client.get(reverse("spuni:search_song", args=("redbone",)))
+        for song_id in response.context['songs'].keys():
+            if (response.context['songs'][song_id]["name"] == "Redbone") and (response.context['songs'][song_id]["artist_name"] == "Childish Gambino"):
+                result = song_id
+                break
+        self.assertEquals(response.context['songs'][song_id]['upvotes'], 55)
+
+    def test_new_slugs_for_spotify_entries(self):
+        response = self.client.get(reverse("spuni:search_song", args=("Platinum Disco",)))
+        expected_slug = slugify(response.context["songs"][0]["name"])+'-'+slugify(response.context["songs"][0]["artist_name"])
+        self.assertTrue(response.context["songs"][0]["slug"] == expected_slug)
 
 class UserLoginTest(TestCase):
     @classmethod
