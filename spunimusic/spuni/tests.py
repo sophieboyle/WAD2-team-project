@@ -45,6 +45,42 @@ class ShowSongViewTest(TestCase):
         response = self.client.get(reverse('spuni:show_song', args=(slug,)))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'song.html')
+    
+    def test_location(self):
+        slug = "shiba-inus-are-the-best-shibe1"
+        response = self.client.get('/spuni/song/'+slug+'/')
+        self.assertEqual(response.status_code, 200)
+
+class ShowProfileViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        u = User.objects.create_user(username="testshibe")
+        u.set_password("iamtestshibe")
+        u.save()
+        UserProfile.objects.create(user=u,
+                                    photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
+
+        u2 = User.objects.create_user(username="authshibe")
+        u2.set_password("iamauthshibe")
+        u2.save()
+        UserProfile.objects.create(user=u2,
+                                    photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
+
+    def test_username_param(self):
+        login = self.client.login(username="authshibe", password="iamauthshibe")
+        response = self.client.get(reverse('spuni:show_profile', args=("testshibe",)))
+        self.assertEqual(response.status_code, 200)
+    
+    def test_correct_template(self):
+        login = self.client.login(username="authshibe", password="iamauthshibe")
+        response = self.client.get(reverse('spuni:show_profile', args=("testshibe",)))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "profile.html")
+    
+    def test_location(self):
+        login = self.client.login(username="authshibe", password="iamauthshibe")
+        response = self.client.get('/spuni/profile/testshibe/')
+        self.assertEqual(response.status_code, 200)
 
 class SongModelTest(TestCase):
     @classmethod
