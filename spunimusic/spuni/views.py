@@ -129,7 +129,6 @@ def user_login(request):
                 return HttpResponse("Sorry, your spuni account has been deactivated! Contact us regarding reactivation of your account.")
         # Incorrect login details
         else:
-            print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details.")
     # Display get login form
     else:

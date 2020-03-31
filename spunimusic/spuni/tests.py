@@ -3,6 +3,7 @@ from spuni.models import Song, UserProfile
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.urls import reverse
+from spuni.forms import LoginForm, UserForm, UserProfileForm, SongForm
 
 class IndexViewTest(TestCase):
     @classmethod
@@ -132,11 +133,31 @@ class UserLoginTest(TestCase):
         UserProfile.objects.create(user=u,
                                     photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
 
-    def test_login(self):
+    def test_login_view_post(self):
         credentials = {"username" : "testshibe",
                         "password" : "iamtestshibe"}
         response = self.client.post("/spuni/login/", credentials, follow=True)
-        self.assertTrue(response.context["user"].is_active)        
+        self.assertTrue(response.context["user"].is_active)
+        self.assertRedirects(response, reverse("spuni:index"))        
+
+    def test_login_view_get(self):
+        response = self.client.get(reverse("spuni:login"))
+        self.assertEquals(response.status_code, 200)
+        self.failUnless(isinstance(response.context['form'], LoginForm))
+
+    def test_invalid_login(self):
+        invalid_creds = {"username" : "testshibe",
+                        "password" : "iambadshibe"}
+        response = self.client.post("/spuni/login/", invalid_creds, follow=True)
+        self.assertEqual(response.content, b"Invalid login details.")
+
+    def test_location(self):
+        response = self.client.get("/spuni/login/")
+        self.assertEquals(response.status_code, 200)
+    
+    def test_uses_correct_template(self):
+        response = self.client.get(reverse("spuni:login"))
+        self.assertTemplateUsed("login.html")
 
 class SongModelTest(TestCase):
     @classmethod
