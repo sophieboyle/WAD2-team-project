@@ -3,7 +3,7 @@ from spuni.models import Song, UserProfile
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.urls import reverse
-from spuni.forms import LoginForm, UserForm, UserProfileForm, SongForm
+from spuni.forms import LoginForm, UserForm, UserProfileForm, SongForm, EditUserProfileForm
 from spuni.views import upvote, downvote
 
 class IndexViewTest(TestCase):
@@ -195,6 +195,45 @@ class RegisterViewTest(TestCase):
     def test_location(self):
         response = self.client.get("/spuni/register/")
         self.assertEquals(response.status_code, 200)
+    
+    def test_uses_correct_template(self):
+        response = self.client.get(reverse("spuni:register"))
+        self.assertTemplateUsed("register.html")
+
+class EditProfileViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        u = User.objects.create_user(username="testshibe")
+        u.set_password("iamtestshibe")
+        u.save()
+        UserProfile.objects.create(user=u,
+                                    photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
+
+    def test_edit_post(self):
+        new_img = "https://66.media.tumblr.com/a64d88296ba34d1bec4fd8e833d711ea/tumblr_ohtx6cUWOi1voqnhpo3_250.png"
+        self.client.login(username="testshibe", password="iamtestshibe")
+        response = self.client.post(reverse("spuni:edit_profile"), {"photo" : new_img})
+        test_user = user=User.objects.get(username="testshibe")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(UserProfile.objects.get(user=test_user).photo, new_img)
+        self.assertTrue(response.context["edited"])
+
+    def test_edit_get(self):
+        self.client.login(username="testshibe", password="iamtestshibe")
+        response = self.client.get(reverse("spuni:edit_profile"))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context["edited"])
+        self.failUnless(isinstance(response.context["edit_form"], EditUserProfileForm))
+
+    def test_location(self):
+        self.client.login(username="testshibe", password="iamtestshibe")
+        response = self.client.get("/spuni/edit/")
+        self.assertEqual(response.status_code, 200)
+    
+    def test_uses_correct_template(self):
+        self.client.login(username="testshibe", password="iamtestshibe")
+        response = self.client.get(reverse("spuni:edit_profile"))
+        self.assertTemplateUsed("edit.html")
 
 class UpvoteTest(TestCase):
     @classmethod
