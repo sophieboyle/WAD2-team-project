@@ -28,3 +28,11 @@ class SongForm(forms.ModelForm):
     class Meta:
         model = Song
         fields = ('name', 'artist',)
+    
+class EditUserProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.get('instance')
+        self.fields["photo"].initial = user.photo
+    
+    class Meta:
+        model = UserProfile
