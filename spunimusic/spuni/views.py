@@ -378,5 +378,5 @@ def edit_profile(request):
     else:
         edit_form = EditUserProfileForm()
     
-    return render(request, 'editprofile.html',
+    return render(request, 'edit_profile.html',
                     context = {"edit_form" : edit_form})

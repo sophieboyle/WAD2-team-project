@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+    <div class="container border space-top">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="global-subtext center-text"><strong>Change Your Profile Pic!</strong></h1>
+                <form id="edit_form" method="post" action="{% url 'spuni:edit_profile' %}">
+                    {% csrf_token %}
+                    {{ edit_form|crispy }}
+                    <input type="submit" value="Submit" class="btn btn-success" />
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
