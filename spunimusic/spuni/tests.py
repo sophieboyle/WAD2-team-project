@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from spuni.forms import LoginForm, UserForm, UserProfileForm, SongForm
-from spuni.views import upvote
+from spuni.views import upvote, downvote
 
 class IndexViewTest(TestCase):
     @classmethod
@@ -228,6 +228,35 @@ class UpvoteTest(TestCase):
         upvote(song_details)
         self.assertTrue(UserProfile.objects.get(user=self.test_user).upvotedSongs.filter(slug=song_details["slug"]).exists())
         self.assertEqual(Song.objects.get(slug=song_details["slug"]).upvotes, 1)
+
+class DownvoteTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Song.objects.create(name="Shiba Inus are the Best", artist="shibe1",
+                            albumArt="https://66.media.tumblr.com/1c0f4fbad5ca9e7262cf4a5b5ba8db51/tumblr_oxz891R1jI1s9dacgo10_250.gifv",
+                            upvotes=10)
+        u = User.objects.create_user(username="testshibe")
+        u.set_password("iamtestshibe")
+        u.save()
+        UserProfile.objects.create(user=u,
+                                    photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
+
+    def setUp(self):
+        self.test_user =  User.objects.get(username="testshibe")
+        self.test_song = Song.objects.get(slug="shiba-inus-are-the-best-shibe1")
+        self.pre_downvote_count = self.test_song.upvotes
+
+    def test_downvote_on_existing_song(self):
+        test_slug = "shiba-inus-are-the-best-shibe1"
+        downvote({"username" : "testshibe", "slug" : "shiba-inus-are-the-best-shibe1"})
+        self.assertFalse(UserProfile.objects.get(user=self.test_user).upvotedSongs.filter(slug=test_slug).exists())
+        self.assertEqual(Song.objects.get(slug=test_slug).upvotes, self.pre_downvote_count)
+
+    def test_downvote_on_non_existing_song(self):
+        test_slug = "careless-whisper-george-michael"
+        downvote({"username" : "testshibe", "slug" : test_slug})
+        self.assertFalse(UserProfile.objects.get(user=self.test_user).upvotedSongs.filter(slug=test_slug).exists())
+        self.assertFalse(Song.objects.filter(slug=test_slug).exists())
 
 class SongModelTest(TestCase):
     @classmethod
