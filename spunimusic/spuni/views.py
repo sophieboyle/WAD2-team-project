@@ -344,10 +344,10 @@ def downvote(request):
         try:
             user_profile.upvotedSongs.get(slug=slug)
             user_profile.upvotedSongs.remove(song)
-            login.info(song.upvotes)
+            logging.info(song.upvotes)
             song.upvotes -= 1
-            login.info("DOWNVOTED")
-            login.info(song.upvotes)
+            logging.info("DOWNVOTED")
+            logging.info(song.upvotes)
             song.save()
         except ObjectDoesNotExist:
             pass
