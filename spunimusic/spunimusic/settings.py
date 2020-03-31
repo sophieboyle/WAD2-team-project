@@ -27,9 +27,9 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'lv9oluj#a4p49za1aq0tpej690x$b+kivo_(pcma9y=s1qm=dx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["sophieboyle2370956b.pythonanywhere.com",]
 
 
 # Application definition
