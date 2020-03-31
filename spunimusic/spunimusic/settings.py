@@ -32,7 +32,6 @@ DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', 
                 'sophieboyle2370956b.pythonanywhere.com/']
 
-
 # Application definition
 
 INSTALLED_APPS = [
