@@ -11,6 +11,7 @@ from spuni.forms import UserForm, UserProfileForm, SongForm, LoginForm
 from spuni.spotifyapi import search
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.defaultfilters import slugify
+import logging
 
 """
     @brief Shows the song details for the given song on song.html
@@ -93,7 +94,7 @@ def register(request):
         
         # Form was invalid
         else:
-            print(user_form.errors, profile_form.errors)
+            logging.info(user_form.errors, profile_form.errors)
 
     # Not HTTP POST, render the empty forms for user input
     else:
@@ -160,7 +161,7 @@ def add_song(request):
             except:
                 return redirect('/')
         else:
-            print(form.errors)
+            logging.info(form.errors)
     return render(request, 'add_song.html', {'form':form})
 
 """
@@ -216,7 +217,7 @@ def show_profile(request, username):
         context_dict['username'] = None
         context_dict['songs'] = u.upvotedSongs.all()
 
-    print(request.user.is_authenticated)
+    logging.info(request.user.is_authenticated)
     return render(request, 'profile.html', context=context_dict) 
 
 """
@@ -236,11 +237,11 @@ def upvote(request):
     # We also bypass authentication if the process is called from the population script.
     if (type(request) != dict):
         if (request.method != "GET"):
-            print("Not a GET.")
+            logging.info("Not a GET.")
             return render(request, 'index.html')
 
         if (not request.user.is_authenticated):
-            print("Not authenticated.")
+            logging.info("Not authenticated.")
             return render(request, 'index.html')
    
     # We have the dict versus normal because the population script also uses the upvote
@@ -293,14 +294,14 @@ def upvote(request):
     # Check if the user has already upvoted this song.
     try:
         user_profile.upvotedSongs.get(slug=slug)
-        print("Already done.")
+        logging.info("Already done.")
     except ObjectDoesNotExist:
         # If not, then we upvote the song.
         user_profile.upvotedSongs.add(song)
-        print(song.upvotes)
+        logging.info(song.upvotes)
         song.upvotes += 1
-        print("UPVOTED")
-        print(song.upvotes)
+        logging.info("UPVOTED")
+        logging.info(song.upvotes)
         song.save()
     
     if (type(request) == dict):
@@ -318,11 +319,11 @@ def downvote(request):
     # We only accept GET requests from authenticated users.
     if (type(request) != dict):
         if (request.method != "GET"):
-            print("Not a GET.")
+            logging.info("Not a GET.")
             return render(request, 'index.html')
 
         if (not request.user.is_authenticated):
-            print("Not authenticated.")
+            logging.info("Not authenticated.")
             return render(request, 'index.html')
 
     # We have the dict versus normal because the population script also uses the upvote
@@ -343,10 +344,10 @@ def downvote(request):
         try:
             user_profile.upvotedSongs.get(slug=slug)
             user_profile.upvotedSongs.remove(song)
-            print(song.upvotes)
+            logging.info(song.upvotes)
             song.upvotes -= 1
-            print("DOWNVOTED")
-            print(song.upvotes)
+            logging.info("DOWNVOTED")
+            logging.info(song.upvotes)
             song.save()
         except ObjectDoesNotExist:
             pass

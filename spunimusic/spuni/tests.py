@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from spuni.forms import LoginForm, UserForm, UserProfileForm, SongForm
+from spuni.views import upvote
 
 class IndexViewTest(TestCase):
     @classmethod
@@ -159,13 +160,82 @@ class UserLoginTest(TestCase):
         response = self.client.get(reverse("spuni:login"))
         self.assertTemplateUsed("login.html")
 
+class RegisterViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        u = User.objects.create_user(username="testshibe")
+        u.set_password("iamtestshibe")
+        u.save()
+        UserProfile.objects.create(user=u,
+                                    photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
+
+    def test_register_view_get(self):
+        response = self.client.get(reverse("spuni:register"))
+        self.assertEquals(response.status_code, 200)
+        self.failUnless(isinstance(response.context["form"], UserForm))
+
+    def test_register_view_post(self):
+        details = {"username" : "signupshibe",
+                    "password" : "iamsignupshibe",
+                    "email" : "signupshibe@shibemail.com",
+                    "photo" : "https://66.media.tumblr.com/207afd29ee5a60a30985389c63a5b51d/tumblr_pgo9ulfB2o1valbo1_400.jpg"}
+        response = self.client.post(reverse("spuni:register"), data=details)
+        self.assertTrue(User.objects.filter(username="signupshibe").exists())
+        self.assertTrue(UserProfile.objects.filter(user=User.objects.get(username="signupshibe")).exists())
+        self.assertTrue(response.context["registered"])
+
+    def test_invalid_registration_user_already_exists(self):
+        details = {"username" : "testshibe",
+                    "password" : "iamtestshibe",
+                    "email" : "testshibe@shibemail.com",
+                    "photo" : "https://66.media.tumblr.com/207afd29ee5a60a30985389c63a5b51d/tumblr_pgo9ulfB2o1valbo1_400.jpg"}
+        response = self.client.post(reverse("spuni:register"), data=details)
+        self.assertFalse(response.context["registered"])
+
+    def test_location(self):
+        response = self.client.get("/spuni/register/")
+        self.assertEquals(response.status_code, 200)
+
+class UpvoteTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Song.objects.create(name="Shiba Inus are the Best", artist="shibe1",
+                            albumArt="https://66.media.tumblr.com/1c0f4fbad5ca9e7262cf4a5b5ba8db51/tumblr_oxz891R1jI1s9dacgo10_250.gifv",
+                            upvotes=10)
+        u = User.objects.create_user(username="testshibe")
+        u.set_password("iamtestshibe")
+        u.save()
+        UserProfile.objects.create(user=u,
+                                    photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
+
+    def setUp(self):
+        self.test_user =  User.objects.get(username="testshibe")
+        self.test_song = Song.objects.get(slug="shiba-inus-are-the-best-shibe1")
+        self.pre_upvote_count = self.test_song.upvotes
+
+    def test_add_upvote_to_existing_song_with_dict_slug_only(self):
+        test_slug = "shiba-inus-are-the-best-shibe1"
+        upvote({"username":"testshibe", "slug":test_slug})
+        self.assertTrue(UserProfile.objects.get(user=self.test_user).upvotedSongs.filter(slug=test_slug).exists())
+        self.assertEquals(Song.objects.get(slug="shiba-inus-are-the-best-shibe1").upvotes, self.pre_upvote_count + 1)
+
+    def test_add_upvote_to_new_song_with_dict_all_details(self):
+        song_details = {"username" : "testshibe",
+                        "slug" : "careless-whisper-george-michael",
+                        "name" : "Careless Whisper",
+                        "albumArt" : "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Wham%21_featuring_George_Michael_US_release.jpeg/220px-Wham%21_featuring_George_Michael_US_release.jpeg",
+                        "artist" : "George Michael"}
+        upvote(song_details)
+        self.assertTrue(UserProfile.objects.get(user=self.test_user).upvotedSongs.filter(slug=song_details["slug"]).exists())
+        self.assertEqual(Song.objects.get(slug=song_details["slug"]).upvotes, 1)
+
 class SongModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         Song.objects.create(name="Shiba Inus are the Best", artist="shibe1",
                             albumArt="https://66.media.tumblr.com/1c0f4fbad5ca9e7262cf4a5b5ba8db51/tumblr_oxz891R1jI1s9dacgo10_250.gifv",
                             upvotes=10)
-    
+
     def test_slug_construction(self):
         song = Song.objects.get(id=1)
         name = song.name
