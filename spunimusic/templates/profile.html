@@ -8,7 +8,7 @@
         <p>User does not exist.</p>
     {% else %}
         <div class="row">
-            <img class="float-left profile-identity" src="{{ user.photo }}" alt="{{ username }}'s profile picture" />
+            <img id="profile-photo" class="float-left profile-identity" src="{{ user.photo }}" alt="{{ username }}'s profile picture" />
             <h1 class="float-right profile-identity">{{ username }}</h1>
         </div>
         <hr>

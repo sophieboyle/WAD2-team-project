@@ -9,8 +9,8 @@
             <img src="{{ song.albumArt }}" class="big-image float-left">
             <p class="song-text"><strong>Song</strong>: {{song.name}}<br><strong>Artist</strong>: {{song.artist}}<br><strong>Likes</strong>: {{song.upvotes}}</p>
             <div class="col-md-6 float-left">
-                <img class="song-image-small float-left" title="{{song.slug}}" src="{% static 'images/upvote.png' %}">
-                <img class="song-image-small space-left" title="{{song.slug}}" src="{% static 'images/downvote.png' %}">
+                <img id="upvote" title="{{song.slug}}" class="song-image-small float-left" src="{% static 'images/upvote.png' %}">
+                <img id="downvote" title="{{song.slug}}" class="song-image-small space-left" src="{% static 'images/downvote.png' %}">
             </div>
         </div>
     </div>
