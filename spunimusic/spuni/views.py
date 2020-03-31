@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth import logout as auth_logout
-from spuni.forms import UserForm, UserProfileForm, SongForm, LoginForm
+from spuni.forms import UserForm, UserProfileForm, SongForm, LoginForm, EditUserProfileForm
 from spuni.spotifyapi import search
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.defaultfilters import slugify
@@ -360,3 +360,23 @@ def downvote(request):
         return
     else:
         return render(request, 'index.html')
+
+"""
+    @brief Provides a form which allows a user to edit
+           their profile: namely, their profile picture
+    @param request HttpRequest object
+"""
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        edit_form = EditUserProfileForm(request.POST,
+                                        instance=request.user)
+        if edit_form.is_valid():
+            edit_form.save()
+        else:
+            logging.info(edit_form.errors)
+    else:
+        edit_form = EditUserProfileForm()
+    
+    return render(request, 'editprofile.html',
+                    context = {"edit_form" : edit_form})
