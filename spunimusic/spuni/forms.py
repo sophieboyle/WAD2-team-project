@@ -31,8 +31,12 @@ class SongForm(forms.ModelForm):
     
 class EditUserProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        super(EditUserProfileForm, self).__init__(*args, **kwargs)
         user = kwargs.get('instance')
-        self.fields["photo"].initial = user.photo
+        if user:
+            self.fields["photo"].initial = user.photo
     
     class Meta:
         model = UserProfile
+        fields = ('photo',)
+        # exclude = ('user',)

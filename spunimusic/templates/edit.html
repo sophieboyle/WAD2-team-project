@@ -5,6 +5,9 @@
 {% load crispy_forms_tags %}
 
 {% block body_block %}
+    {% if edited %}
+        <meta http-equiv="REFRESH" content="0;{% url 'spuni:show_profile' user.username %}">
+    {% else %}
     <div class="container border space-top">
         <div class="row">
             <div class="col-md-12">
@@ -17,4 +20,5 @@
             </div>
         </div>
     </div>
+    {% endif %}
 {% endblock %}

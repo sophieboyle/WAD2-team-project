@@ -368,15 +368,18 @@ def downvote(request):
 """
 @login_required
 def edit_profile(request):
+    edited = False
     if request.method == 'POST':
         edit_form = EditUserProfileForm(request.POST,
-                                        instance=request.user)
+                                        instance=request.user.userprofile)
         if edit_form.is_valid():
             edit_form.save()
+            edited = True
         else:
             logging.info(edit_form.errors)
     else:
-        edit_form = EditUserProfileForm()
+        edit_form = EditUserProfileForm(instance=request.user.userprofile)
     
-    return render(request, 'edit_profile.html',
-                    context = {"edit_form" : edit_form})
+    return render(request, 'edit.html',
+                    context = {"edit_form" : edit_form,
+                                "edited" : edited})
