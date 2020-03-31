@@ -6,7 +6,7 @@ from django import forms
 class UserForm(forms.ModelForm):
     # Explicit definition conceals password
     password = forms.CharField(widget=forms.PasswordInput())
-    
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password',)
@@ -14,7 +14,7 @@ class UserForm(forms.ModelForm):
 class LoginForm(forms.ModelForm):
     # Explicit definition conceals password
     password = forms.CharField(widget=forms.PasswordInput())
-    
+
     class Meta:
         model = User
         fields = ('username', 'password',)

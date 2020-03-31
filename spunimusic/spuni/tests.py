@@ -159,6 +159,42 @@ class UserLoginTest(TestCase):
         response = self.client.get(reverse("spuni:login"))
         self.assertTemplateUsed("login.html")
 
+class RegisterViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        u = User.objects.create_user(username="testshibe")
+        u.set_password("iamtestshibe")
+        u.save()
+        UserProfile.objects.create(user=u,
+                                    photo="https://i.kym-cdn.com/photos/images/newsfeed/001/688/970/a72.jpg")
+
+    def test_register_view_get(self):
+        response = self.client.get(reverse("spuni:register"))
+        self.assertEquals(response.status_code, 200)
+        self.failUnless(isinstance(response.context["form"], UserForm))
+
+    def test_register_view_post(self):
+        details = {"username" : "signupshibe",
+                    "password" : "iamsignupshibe",
+                    "email" : "signupshibe@shibemail.com",
+                    "photo" : "https://66.media.tumblr.com/207afd29ee5a60a30985389c63a5b51d/tumblr_pgo9ulfB2o1valbo1_400.jpg"}
+        response = self.client.post(reverse("spuni:register"), data=details)
+        self.assertTrue(User.objects.filter(username="signupshibe").exists())
+        self.assertTrue(UserProfile.objects.filter(user=User.objects.get(username="signupshibe")).exists())
+        self.assertTrue(response.context["registered"])
+
+    def test_invalid_registration_user_already_exists(self):
+        details = {"username" : "testshibe",
+                    "password" : "iamtestshibe",
+                    "email" : "testshibe@shibemail.com",
+                    "photo" : "https://66.media.tumblr.com/207afd29ee5a60a30985389c63a5b51d/tumblr_pgo9ulfB2o1valbo1_400.jpg"}
+        response = self.client.post(reverse("spuni:register"), data=details)
+        self.assertFalse(response.context["registered"])
+
+    def test_location(self):
+        response = self.client.get("/spuni/register/")
+        self.assertEquals(response.status_code, 200)
+
 class SongModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
