@@ -47,7 +47,7 @@
                 
                 <!-- Buttons -->
                 <div class="col-xs-4 navbar-nav mx-auto">
-                    {% if user.username %}
+                    {% if user.username or username %}
                         <div class="btn-group">
                             <a id="profile" class="nav-link text btn btn-secondary" href="/spuni/profile/{{ user.username }}">My Profile</a>
                             <a class="nav-link text btn btn-secondary" href="{% url 'spuni:logout' %}">Logout</a>

@@ -39,6 +39,11 @@ body, html {
     font-size: 50px;
 }
 
+#profile-photo {
+    max-height: 300px;
+    max-width: 300px;
+}
+
 .song-image {
     max-height: 150px;
     max-width: 150px;

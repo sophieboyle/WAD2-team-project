@@ -17,7 +17,14 @@ function sendRequest(requestUrl, username, slug, song, albumart, artist) {
 // Increases/Decreases an element.
 function changeValue(element, action) {
     let parent = $(element).parent();
-    let tElement = $(parent).find(".song-text")[0];
+    let tElement = "";
+
+    if (window.location.href.includes("/spuni/song")) {
+        tElement = $(parent).parent()[0];
+    } else {
+        tElement = $(parent).find(".song-text")[0];
+    }
+
     // Getting the current upvotes.
     let rx = /Likes<\/strong>: (\d+)/g;
     let value = rx.exec(tElement.outerHTML);
@@ -39,11 +46,15 @@ function changeValue(element, action) {
 $(document).on("click", "#upvote, #downvote", function() {
     let rx;
     let username = "";
-    let parent = $(this).parent()[0];
+    let parent = "";
+
+    if (window.location.href.includes("/spuni/song")) {
+        parent = $(this).parent().parent()[0];
+    } else {
+        parent = $(this).parent()[0];
+    }
+
     let parentInnerText = parent.innerText;
-    
-    // Getting the slug.
-    let slug = $(this).attr("title");
 
     // Getting the username.
     if ($("#profile").length != 0) {
@@ -51,17 +62,32 @@ $(document).on("click", "#upvote, #downvote", function() {
         rx = /\/profile\/(\w+)/g
         username = rx.exec(usernameHref)[1];
     }
-
-    // Song name.
-    rx = /Song: (.[^\\]*)/g;
-    let songname = rx.exec(parentInnerText)[1].split("\n")[0];
     
     // Artist name.
     rx = /Artist: (.[^\\]*)/g
     let artistname = rx.exec(parentInnerText)[1].split("\n")[0];
 
+    // Song name.
+    rx = /Song: (.[^\\]*)/g;
+    let songname = rx.exec(parentInnerText)[1].split("\n")[0];
+
+    // Getting the slug.
+    let slug = "";
+    if (window.location.href.includes("/spuni/song")) {
+        slug = songname + " " + artistname;
+        slug = slug.toLowerCase();
+        slug = slug.replace(/ /g, "-");
+    } else {
+        slug = $(this).attr("title");
+    }
+
     // Album
-    let albumart = parent.childNodes[1].childNodes[1].attributes[1].nodeValue;
+    let albumart = "";
+    if (window.location.href.includes("/spuni/song")) { 
+        albumart = parent.childNodes[1].currentSrc;
+    } else {
+        albumart = parent.childNodes[1].childNodes[1].attributes[1].nodeValue;
+    }
     
 
     // If the user pressed the upvote button.
