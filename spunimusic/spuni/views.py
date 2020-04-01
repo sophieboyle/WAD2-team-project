@@ -38,7 +38,8 @@ def show_song(request, song_name_slug):
 """
 def index(request):
     song_list = Song.objects.order_by('-upvotes')
-    context_dict = {'songs': song_list}
+    
+    context_dict = {'songs': filter_out_zero_vote_songs(song_list)}
 
     if request.user.is_authenticated:
         username = request.user.username
@@ -47,7 +48,19 @@ def index(request):
         return render(request, 'index.html', context_dict)
     else:
         return render(request, 'index.html', context_dict)
-    
+
+"""
+    @brief Helper function to filter out songs
+           with no votes.
+    @param song_list: List of songs.
+    @return result: A new list of songs without 0 votes.
+"""
+def filter_out_zero_vote_songs(song_list):
+    result = []
+    for song in song_list:
+        if (song.upvotes != 0):
+            result.append(song)
+    return result
 
 """
     @brief Logout view
