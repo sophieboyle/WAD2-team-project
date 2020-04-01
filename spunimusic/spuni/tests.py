@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from spuni.forms import LoginForm, UserForm, UserProfileForm, SongForm, EditUserProfileForm
-from spuni.views import upvote, downvote
+from spuni.views import upvote, downvote, filter_out_zero_votes
 
 """
     Tests the index view.
@@ -47,6 +47,29 @@ class IndexViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
 
+"""
+    Test the helper function filter_out_zero_votes.
+"""
+class filterOutZeroVoteSongsTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Song.objects.create(name="Shiba Inus are the Best", artist="shibe1",
+            albumArt="https://66.media.tumblr.com/1c0f4fbad5ca9e7262cf4a5b5ba8db51/tumblr_oxz891R1jI1s9dacgo10_250.gifv",
+            upvotes=100)
+        Song.objects.create(name="Redbone", artist="Childish Gambino",
+                    albumArt='https://i.scdn.co/image/ab67616d0000b273b08b996d08001270adc8b555',
+                    upvotes=0)
+    
+    def test_no_zeros(self):
+        """
+            Tests that no songs with zero upvotes are
+            included in the return list, and only songs
+            which have upvotes > 0 remain in the result.
+        """
+        song_list = Song.objects.order_by('-upvotes')
+        result = filter_out_zero_votes(song_list)
+        self.assertFalse(Song.objects.get(slug="redbone-childish-gambino") in result)
+        self.assertTrue(Song.objects.get(slug="shiba-inus-are-the-best-shibe1") in result)
 """
     Tests the show_song view.
 """

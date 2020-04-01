@@ -39,7 +39,7 @@ def show_song(request, song_name_slug):
 def index(request):
     song_list = Song.objects.order_by('-upvotes')
     
-    context_dict = {'songs': filter_out_zero_vote_songs(song_list)}
+    context_dict = {'songs': filter_out_zero_votes(song_list)}
 
     if request.user.is_authenticated:
         username = request.user.username
@@ -55,7 +55,7 @@ def index(request):
     @param song_list: List of songs.
     @return result: A new list of songs without 0 votes.
 """
-def filter_out_zero_vote_songs(song_list):
+def filter_out_zero_votes(song_list):
     result = []
     for song in song_list:
         if (song.upvotes != 0):
