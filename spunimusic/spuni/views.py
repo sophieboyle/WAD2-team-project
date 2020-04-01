@@ -330,7 +330,7 @@ def upvote(request):
         try:
             # Remove downvote entry from downvotedSongs field
             # if there has been a downvote in the past
-            downvote = user_profile.downvotedSongs.get()
+            downvote = user_profile.downvotedSongs.get(slug=slug)
             user_profile.downvotedSongs.remove(downvote)
         except: 
             pass
