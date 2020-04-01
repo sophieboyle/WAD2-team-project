@@ -3,9 +3,9 @@
 {% load static %}
 
 {% block body_block %}
-<div class="container border space-top">
-    <div class="row space-top space-bottom">
-        <div class="col-md-12">
+<div class="container space-top">
+    <div class="row space-top">
+        <div class="col-md-12 module-container bg-dark">
             <img src="{{ song.albumArt }}" class="big-image float-left">
             <p class="song-text"><strong>Song</strong>: {{song.name}}<br><strong>Artist</strong>: {{song.artist}}<br><strong>Likes</strong>: {{song.upvotes}}</p>
             <div class="col-md-6 float-left">

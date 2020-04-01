@@ -9,9 +9,9 @@
     {% if registered %}
         <meta http-equiv="REFRESH" content="0;{% url 'spuni:index'%}">
     {% else %}
-        <div class="container border space-top">
+        <div class="container space-top">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 module-container bg-dark">
                     <h1 class="global-subtext center-text"><strong>Register here:</strong></h1>
                     <form id="user_form" method="post" action="{% url 'spuni:register'%}" enctype="multipart/form-data">
                         <!-- Display the form -->

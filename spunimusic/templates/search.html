@@ -9,7 +9,7 @@
     <div class="row space-top">
         <div class="col-md-12">
             <p class="text-header">
-                <span class="global-text">Here are the top results for your search:</span>
+                <span class="global-text">TOP SEARCH RESULTS :</span>
             </p>
         </div>
     </div>
@@ -17,16 +17,16 @@
 <!-- Banner -->
 
 <!-- Song Table -->
-<div class="container border">
+<div class="container">
     {% if not songs %}
         <!-- If there are no songs then post an error. -->
         <div class="row space-top">
-            <p class="global-subtext">There are no songs present.</p>
+            <p class="global-subtext">No songs match that search :(</p>
         </div>
     {% else %}
         {% for key, value in songs.items %}
             <div class="row space-top">
-                <div class="col-md-12">
+                <div class="col-md-12 song-bar bg-dark">
                     <a href="{% url 'spuni:show_song' value.slug %}">
                         <img class="song-image float-left" src={{value.album_art}}>
                     </a>
