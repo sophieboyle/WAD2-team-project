@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block body_block %}
+
+<ul>
+    <!-- Do not use "user", as this is the
+        request.user value.
+        Do u.user to access username, and
+        u.photo to access photo -->
+    {% for u in user_list %}
+        <li>{{ u.user.username }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

@@ -407,3 +407,12 @@ def edit_profile(request):
     return render(request, 'edit.html',
                     context = {"edit_form" : edit_form,
                                 "edited" : edited})
+
+"""
+    @brief Shows a list of currently registered users.
+    @param request A HttpRequest object.
+"""
+def show_user_list(request):
+    user_list = UserProfile.objects.all()
+    return render(request, 'users.html',
+                    context = {"user_list" : user_list})
