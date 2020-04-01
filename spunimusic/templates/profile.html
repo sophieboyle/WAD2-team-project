@@ -9,7 +9,7 @@
     {% else %}
         <div class="row module-container bg-dark">
             <img id="profile-photo" class="float-left profile-pic" src="{{ prof_user.photo }}" alt="{{ prof_username }}'s profile picture" />
-            {% if prof_username %}
+            {% if prof_username == user.username %}
                 <h1 class="float-right profile-text">{{ prof_username }} <br><a href="{% url 'spuni:edit_profile'%}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Edit</a></h1>
             {% else %}
                 <h1 class="float-right profile-text">{{ prof_username }}</h1>
