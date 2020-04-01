@@ -19,7 +19,7 @@
         {% if songs %}
             {% for song in songs %}
                 <div class="row space-top">
-                    <div class="col-md-12 song-bar bg-dark">
+                    <div class="col-md-12 song-bar bg-dark text-wrap">
                         <a href="{% url 'spuni:show_song' song.slug %}">
                             <img class="song-image float-left" id="thumbnail" src={{song.albumArt}}>
                         </a>
