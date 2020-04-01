@@ -222,12 +222,12 @@ def show_profile(request, username):
     context_dict = {}
     try:
         u = UserProfile.objects.get(user=User.objects.get(username=username))
-        context_dict['user'] = u
-        context_dict['username'] = username
+        context_dict['prof_user'] = u
+        context_dict['prof_username'] = username
         context_dict['songs'] = u.upvotedSongs.all()
     except (User.DoesNotExist, UserProfile.DoesNotExist) as e:
-        context_dict['user'] = None
-        context_dict['username'] = None
+        context_dict['prof_user'] = None
+        context_dict['prof_username'] = None
         context_dict['songs'] = u.upvotedSongs.all()
 
     logging.info(request.user.is_authenticated)
