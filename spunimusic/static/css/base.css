@@ -47,6 +47,10 @@ body, html {
     max-width: 300px;
 }
 
+.module-container{
+	padding:10px;
+	border-radius:5px;
+}
 
 
 .song-image {
