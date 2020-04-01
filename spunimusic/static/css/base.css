@@ -131,3 +131,11 @@ body, html {
 .para-box{
 	padding:20px;
 }
+
+.text-wrap > p{
+	white-space: nowrap; 
+	width: 400px; 
+	overflow: hidden;
+	text-overflow: ellipsis; 
+	
+}

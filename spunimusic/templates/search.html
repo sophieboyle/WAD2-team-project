@@ -26,8 +26,10 @@
     {% else %}
         {% for key, value in songs.items %}
             <div class="row space-top">
-                <div class="col-md-12 song-bar bg-dark">
+                <div class="col-md-12 song-bar bg-dark text-wrap">
+				<a>
                     <img class="song-image float-left" src={{value.album_art}}>
+				</a>
                     <p class="song-text"><strong>Song</strong>: {{value.name}}<br><strong>Artist</strong>: {{value.artist_name}}<br><strong>Likes</strong>: {{value.upvotes}}</p>
                     <img id="downvote" title="{{value.slug}}" class="song-image float-right" src="{% static 'images/downvote.png' %}">
                     <img id="upvote" title="{{value.slug}}" class="song-image float-right" src="{% static 'images/upvote.png' %}">
