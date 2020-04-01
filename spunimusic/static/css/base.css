@@ -4,10 +4,7 @@ body, html {
     font-family: 'Oswald', sans-serif;
 }
 
-#search-bar {
-    max-width: 400px;
-    width: 100%;
-}
+
 
 .space-top {
     margin-top: 20px;
