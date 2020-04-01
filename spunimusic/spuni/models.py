@@ -49,6 +49,7 @@ class UserProfile(models.Model):
     photo = models.URLField(max_length=PHOTO_MAX_LENGTH)
     # Related name gives a name to the intermediate model for the relationship
     upvotedSongs = models.ManyToManyField(Song, blank=True, related_name="user_song")
+    downvotedSongs = models.ManyToManyField(Song, blank=True, related_name="downvoted_song")
 
     def __str__(self):
         return self.user.username

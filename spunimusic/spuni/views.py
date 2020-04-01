@@ -327,6 +327,13 @@ def upvote(request):
         logging.info("UPVOTED")
         logging.info(song.upvotes)
         song.save()
+        try:
+            # Remove downvote entry from downvotedSongs field
+            # if there has been a downvote in the past
+            downvote = user_profile.downvotedSongs.get()
+            user_profile.downvotedSongs.remove(downvote)
+        except: 
+            pass
     
     if (type(request) == dict):
         return
@@ -347,7 +354,7 @@ def downvote(request):
             return render(request, 'index.html')
 
         if (not request.user.is_authenticated):
-            logging.info("Not authenticated.")
+            logging.warning("Not authenticated.")
             return render(request, 'index.html')
 
     # We have the dict versus normal because the population script also uses the upvote
@@ -364,17 +371,26 @@ def downvote(request):
 
     try:
         song = Song.objects.get(slug=slug)
-        # Check if the user has already downvoted this song.
-        try:
-            user_profile.upvotedSongs.get(slug=slug)
-            user_profile.upvotedSongs.remove(song)
+        # If the song has more than 0 upvotes
+        # and they have not already downvoted the song
+        if (song.upvotes > 0) and not (user_profile.downvotedSongs.filter(slug=slug).exists()):
+            # Check if the user has upvoted this song.
+            try:
+                # Remove relationship
+                user_profile.upvotedSongs.get(slug=slug)
+                user_profile.upvotedSongs.remove(song)
+            except ObjectDoesNotExist:
+                pass
+
+            # Decrement upvotes
             logging.info(song.upvotes)
             song.upvotes -= 1
             logging.info("DOWNVOTED")
             logging.info(song.upvotes)
             song.save()
-        except ObjectDoesNotExist:
-            pass
+            # Add downvoted song relationship to user
+            user_profile.downvotedSongs.add(Song.objects.get(slug=slug))
+
     # The song to be downvoted doesn't exist in the model
     # This choice does not allow for negative downvotes
     except ObjectDoesNotExist:
