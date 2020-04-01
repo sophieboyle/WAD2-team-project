@@ -49,6 +49,17 @@ def index(request):
     else:
         return render(request, 'index.html', context_dict)
 
+
+
+"""
+    @brief Shows about view on about.html
+"""
+def about(request):
+    # Spoiler: you don't need to pass a context dictionary here.
+    return render(request, 'about.html')
+
+
+
 """
     @brief Helper function to filter out songs
            with no votes.
