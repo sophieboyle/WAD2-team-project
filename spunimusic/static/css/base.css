@@ -137,5 +137,5 @@ body, html {
 	width: 400px; 
 	overflow: hidden;
 	text-overflow: ellipsis; 
-	
+	cursor:default;
 }
