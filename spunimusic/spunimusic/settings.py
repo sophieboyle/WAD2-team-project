@@ -30,7 +30,7 @@ SECRET_KEY = 'lv9oluj#a4p49za1aq0tpej690x$b+kivo_(pcma9y=s1qm=dx'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 
-                'sophieboyle2370956b.pythonanywhere.com/']
+                'sophieboyle2370956b.pythonanywhere.com']
 
 # Application definition
 
