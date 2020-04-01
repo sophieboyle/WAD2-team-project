@@ -4,10 +4,7 @@ body, html {
     font-family: 'Oswald', sans-serif;
 }
 
-#search-bar {
-    max-width: 400px;
-    width: 100%;
-}
+
 
 .space-top {
     margin-top: 20px;
@@ -26,6 +23,10 @@ body, html {
     padding: 30px;
 }
 
+.song-bar{
+	border-radius:5px;
+}
+
 .global-text, .global-subtext {
     color: white;
 }
@@ -33,16 +34,24 @@ body, html {
 .global-text {
     font-weight: bold;
     font-size: 70px;
+	text-shadow: 5px 5px black;
 }
 
 .global-subtext {
-    font-size: 50px;
+    font-size: 40px;
+	color: #d9d9d9;
 }
 
 #profile-photo {
     max-height: 300px;
     max-width: 300px;
 }
+
+.module-container{
+	padding:10px;
+	border-radius:5px;
+}
+
 
 .song-image {
     max-height: 150px;
@@ -58,8 +67,10 @@ body, html {
 
 .song-text {
     margin-left: 2%;
-    font-size: xx-large;
+    font-size: x-large;
+	line-height:45px;
     float: left;
+	color:#d9d9d9;
 }
 
 #upvote, #downvote {
@@ -93,14 +104,20 @@ body, html {
     color: #dbafc3 !important;
 }
 
-.profile-identity {
+.profile-text {
     padding-left: 1%;
-    padding-top: 1%;
+    padding-top: ;
+	color:white;
+}
+
+.profile-pic{
+	border-radius:3px;
 }
 
 .big-image {
     width: 300px;
     height: 300px;
+	border-radius:3px;
 }
 
 .item {
@@ -109,4 +126,8 @@ body, html {
 
 .selected{
     box-shadow:0px 12px 22px 1px #333;
+}
+
+.para-box{
+	padding:20px;
 }

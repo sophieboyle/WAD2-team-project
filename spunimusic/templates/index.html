@@ -18,7 +18,7 @@
 <!-- Banner -->
 
 <!-- Song Table -->
-<div class="container border">
+<div class="container">
         {% if not songs %}
             <!-- If there are no songs then post an error. -->
             <div class="row space-top">
@@ -27,7 +27,7 @@
         {% else %}
             {% for song in songs %}
                 <div class="row space-top">
-                    <div class="col-md-12">
+                    <div class="col-md-12 song-bar bg-dark">
                         <a href="{% url 'spuni:show_song' song.slug %}">
                             <img class="song-image float-left" src={{song.albumArt}}>
                         </a>

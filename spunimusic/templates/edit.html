@@ -8,9 +8,9 @@
     {% if edited %}
         <meta http-equiv="REFRESH" content="0;{% url 'spuni:show_profile' user.username %}">
     {% else %}
-    <div class="container border space-top">
-        <div class="row">
-            <div class="col-md-12">
+    <div class="container ">
+        <div class="row space-top">
+            <div class="col-md-12 module-container bg-dark">
                 <h1 class="global-subtext center-text"><strong>Change Your Profile Pic!</strong></h1>
                 <form id="edit_form" method="post" action="{% url 'spuni:edit_profile' %}">
                     {% csrf_token %}
