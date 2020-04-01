@@ -8,11 +8,11 @@
         <p>User does not exist.</p>
     {% else %}
         <div class="row">
-            <img id="profile-photo" class="float-left profile-identity" src="{{ user.photo }}" alt="{{ username }}'s profile picture" />
+            <img id="profile-photo" class="float-left profile-identity" src="{{ prof_user.photo }}" alt="{{ prof_username }}'s profile picture" />
             {% if username %}
-                <h1 class="float-right profile-identity">{{ username }} <br><a href="{% url 'spuni:edit_profile'%}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Edit</a></h1>
+                <h1 class="float-right profile-identity">{{ prof_username }} <br><a href="{% url 'spuni:edit_profile'%}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Edit</a></h1>
             {% else %}
-                <h1 class="float-right profile-identity">{{ username }}</h1>
+                <h1 class="float-right profile-identity">{{ prof_username }}</h1>
             {% endif %}
         </div>
         <hr>
