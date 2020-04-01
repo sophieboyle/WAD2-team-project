@@ -3,28 +3,28 @@
 {% load static %}
 
 {% block body_block %}
-<div class="container border space-top">
+<div class="container space-top">
     {% if not user %}
         <p>User does not exist.</p>
     {% else %}
-        <div class="row">
-            <img id="profile-photo" class="float-left profile-identity" src="{{ prof_user.photo }}" alt="{{ prof_username }}'s profile picture" />
+        <div class="row module-container bg-dark">
+            <img id="profile-photo" class="float-left profile-pic" src="{{ prof_user.photo }}" alt="{{ prof_username }}'s profile picture" />
             {% if prof_username %}
-                <h1 class="float-right profile-identity">{{ prof_username }} <br><a href="{% url 'spuni:edit_profile'%}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Edit</a></h1>
+                <h1 class="float-right profile-text">{{ prof_username }} <br><a href="{% url 'spuni:edit_profile'%}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Edit</a></h1>
             {% else %}
-                <h1 class="float-right profile-identity">{{ prof_username }}</h1>
+                <h1 class="float-right profile-text">{{ prof_username }}</h1>
             {% endif %}
         </div>
         <hr>
         {% if songs %}
             {% for song in songs %}
                 <div class="row space-top">
-                    <div class="col-md-12">
+                    <div class="col-md-12 song-bar bg-dark">
                         <a href="{% url 'spuni:show_song' song.slug %}">
                             <img class="song-image float-left" id="thumbnail" src={{song.albumArt}}>
                         </a>
                         <p class="song-text"><strong>Song</strong>: {{song.name}}<br><strong>Artist</strong>: {{song.artist}}<br><strong>Likes</strong>: {{song.upvotes}}</p>
-                        <img id="downvote" title="{{song.slug}}" class="song-image float-right" src="{% static 'images/downvote.png' %}">
+                        <img id="downvote" title="{{song.slug}}" class="song-image float-right " src="{% static 'images/downvote.png' %}">
                         <img id="upvote" title="{{song.slug}}" class="song-image float-right" src="{% static 'images/upvote.png' %}">
                     </div>
                 </div>

@@ -5,9 +5,9 @@
 {% load crispy_forms_tags %}
 
 {% block body_block %}
-    <div class="container border space-top">
-        <div class="row">
-            <div class="col-md-12">
+    <div class="container">
+        <div class="row space-top">
+            <div class="col-md-12 module-container bg-dark ">
                 <h1 class="global-subtext center-text"><strong>Login to Spuni!</strong></h1>
                 <form id="login_form" method="post" action="{% url 'spuni:login' %}">
                     {% csrf_token %}

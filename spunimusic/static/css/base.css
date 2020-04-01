@@ -104,9 +104,14 @@ body, html {
     color: #dbafc3 !important;
 }
 
-.profile-identity {
+.profile-text {
     padding-left: 1%;
-    padding-top: 1%;
+    padding-top: ;
+	color:white;
+}
+
+.profile-pic{
+	border-radius:3px;
 }
 
 .big-image {
