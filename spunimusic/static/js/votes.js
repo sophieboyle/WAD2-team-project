@@ -81,6 +81,7 @@ $(document).on("click", "#upvote, #downvote", function() {
     if (window.location.href.includes("/spuni/song")) {
         slug = songname + " " + artistname;
         slug = slug.toLowerCase();
+        slug = slug.replace(/[^\w\s]/gi, "");
         slug = slug.replace(/ /g, "-");
     } else {
         slug = $(this).attr("title");
