@@ -13,7 +13,7 @@
     {% for u in user_list %}
 		<div class="row space-top justify-content-md-center">
         <div class="col-md-8 module-container bg-dark text-wrap">
-		<a href="/spuni/profile/{{ u.user }}">
+		<a id="profile-photo" href="/spuni/profile/{{ u.user }}">
             <img src="{{ u.photo }}" class="user-image float-left">
             <p class="song-text">{{u.user}}</p>
 		</a>
@@ -21,4 +21,5 @@
     </div>
     {% endfor %}
 
+<script src="{% static 'js/votes.js' %}" type="text/javascript"></script>
 {% endblock %}
