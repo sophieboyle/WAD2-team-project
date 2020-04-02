@@ -257,6 +257,7 @@ def show_profile(request, username):
                     OR a request object
 """
 def upvote(request):
+    print("chimpchomp")
     # We only accept GET requests from authenticated users.
     # We also bypass authentication if the process is called from the population script.
     if (type(request) != dict):

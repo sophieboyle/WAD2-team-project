@@ -48,6 +48,11 @@ $(document).on("click", "#upvote, #downvote", function() {
     let username = "";
     let parent = "";
 
+    if ($("#register").length == 1) {
+        $.notify("You need to be logged in to vote.", "error");
+        return;
+    }
+
     if (window.location.href.includes("/spuni/song")) {
         parent = $(this).parent().parent()[0];
     } else {
@@ -89,7 +94,6 @@ $(document).on("click", "#upvote, #downvote", function() {
         albumart = parent.childNodes[1].childNodes[1].attributes[1].nodeValue;
     }
     
-
     // If the user pressed the upvote button.
     if ($(this).attr("id") == "upvote") {
         // If it has been already selected then downvote.
