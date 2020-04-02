@@ -56,6 +56,8 @@ body, html {
 .song-image {
     max-height: 150px;
     max-width: 150px;
+    width: auto;
+    height: auto;
 }
 
 .song-image-small {

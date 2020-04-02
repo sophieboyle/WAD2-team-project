@@ -42,6 +42,14 @@ function changeValue(element, action) {
     $(tElement).replaceWith(cElement);
 }
 
+// If you try to go on a user's profile and not logged in the error.
+$(document).on("click", "#profile-photo", function(event) {
+    if ($("#register").length == 1) {
+        $.notify("You need to be logged in to view someone's profile.", "error");
+        event.preventDefault();
+    }
+})
+
 // When a user clicks the upvote or the downvote button.
 $(document).on("click", "#upvote, #downvote", function() {
     let rx;
