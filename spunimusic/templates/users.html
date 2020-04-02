@@ -4,14 +4,21 @@
 
 {% block body_block %}
 
-<ul>
+
     <!-- Do not use "user", as this is the
         request.user value.
         Do u.user to access username, and
         u.photo to access photo -->
+<div class="container space-top">
     {% for u in user_list %}
-        <li>{{ u.user.username }}</li>
+		<div class="row space-top justify-content-md-center">
+        <div class="col-md-8 module-container bg-dark text-wrap">
+		<a href="/spuni/profile/{{ u.user }}">
+            <img src="{{ u.photo }}" class="user-image float-left">
+            <p class="song-text">{{u.user}}</p>
+		</a>
+        </div>
+    </div>
     {% endfor %}
-</ul>
 
 {% endblock %}
