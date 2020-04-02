@@ -120,6 +120,13 @@ body, html {
 	border-radius:3px;
 }
 
+.user-image {
+    width: 150px;
+    height: 150px;
+	border-radius:3px;
+}
+
+
 .item {
     display: block;
 }
