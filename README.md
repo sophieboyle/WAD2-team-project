@@ -29,7 +29,7 @@
 
 ## Stuff for spotipy
 
-In your terminal do the following:
+- In your terminal do the following:
 
 ```
 export SPOTIPY_CLIENT_ID=client_id_here
@@ -37,17 +37,53 @@ export SPOTIPY_CLIENT_SECRET=client_secret_here
 
 // on Windows, use `SET` instead of `export`
 ```
+- API keys can be found in the one page submission document.
+
+## Running the Server
+
+- Initialise the database.
+
+```
+cd spunimusic
+python manage.py migrate
+```
+
+- Populate the database with test data.
+
+```
+python populate_spuni.py
+```
+
+- Run the server
+
+```
+python manage.py runserver
+```
 
 ## General Notes
 Spotify redirect URI: http://localhost:8000/social/complete/spotify/
 
 Make sure while in development, you use localhost and not 127.0.0.1 because Spotify won't be able to redirect otherwise.
 
-## Helpful Docs
-- https://kholinlabs.com/django-authentication-via-google-deezer-and-spotify
-- https://python-social-auth.readthedocs.io/
+## Technologies Used
 
-## TODO List
-- [x] Spotify login.
-- [ ] Basic web pages. i.e Home, Profile, etc.
+- Django 3.0.3 
+https://www.djangoproject.com/
 
+- Spotipy
+https://spotipy.readthedocs.io/en/2.9.0/
+
+- Crispy Forms
+https://django-crispy-forms.readthedocs.io/en/latest/
+
+- Bootstrap
+https://getbootstrap.com/
+
+- SQLite
+https://www.sqlite.org/index.html
+
+- Google Fonts
+https://fonts.google.com/
+
+- Ajax
+https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX
